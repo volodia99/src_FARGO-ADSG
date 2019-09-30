@@ -1,0 +1,489 @@
+Dsys.c:  sys->dustsize = ds;
+Dsys.c:  sys->dustsize_init = dsi;
+Dsys.c:  sys->r = r;
+Dsys.c:  sys->th = the;
+Dsys.c:  sys->vr = vr;
+Dsys.c:  sys->vth = vth;
+Dsys.c:  sys->l = l;
+Dsys.c:  sys->rad_geff_acc = rad_geff_acc;
+Dsys.c:  sys->azi_geff_acc = azi_geff_acc;
+Dsys.c:  sys->rad_gradp = rad_gradp;
+Dsys.c:  sys->azi_gradp = azi_gradp;
+Dsys.c:  sys->rad_drag_acc = rad_drag_acc;
+Dsys.c:  sys->azi_drag_acc = azi_drag_acc;
+Dsys.c:  sys->rad_ind_acc = rad_ind_acc;
+Dsys.c:  sys->azi_ind_acc = azi_ind_acc;
+Dsys.c:  sys->rad_sg_acc = rad_sg_acc;
+Dsys.c:  sys->azi_sg_acc = azi_sg_acc;
+Dsys.c:  sys->gasvratpc = gasvratpc;
+Dsys.c:  sys->gasvtatpc = gasvtatpc;
+Dsys.c:  sys->gasdensatpc = gasdensatpc;
+Dsys.c:  sys->gascsatpc = gascsatpc;
+Dsys.c:  sys->jacobi = jacobi;
+Dsys.c:  sys->stokesnb = stokesnb;
+Dsys.c:  sys->senddusttoprevCPU = senddusttoprevCPU;
+Dsys.c:  sys->senddusttonextCPU = senddusttonextCPU;
+Dsys.c:  sys->recvdustfromprevCPU = recvdustfromprevCPU;
+Dsys.c:  sys->recvdustfromnextCPU = recvdustfromnextCPU;
+Dsys.c:  free (sys->dustsize);
+Dsys.c:  free (sys->dustsize_init);
+Dsys.c:  free (sys->r);
+Dsys.c:  free (sys->th);
+Dsys.c:  free (sys->vr);
+Dsys.c:  free (sys->vth);
+Dsys.c:  free (sys->l);
+Dsys.c:  free (sys->gasvratpc);
+Dsys.c:  free (sys->gasvtatpc);
+Dsys.c:  free (sys->rad_geff_acc);
+Dsys.c:  free (sys->azi_geff_acc);
+Dsys.c:  free (sys->rad_gradp);
+Dsys.c:  free (sys->azi_gradp);
+Dsys.c:  free (sys->rad_drag_acc);
+Dsys.c:  free (sys->azi_drag_acc);
+Dsys.c:  free (sys->rad_ind_acc);
+Dsys.c:  free (sys->azi_ind_acc);
+Dsys.c:  free (sys->rad_sg_acc);
+Dsys.c:  free (sys->azi_sg_acc);
+Dsys.c:  free (sys->gasdensatpc);
+Dsys.c:  free (sys->gascsatpc);
+Dsys.c:  free (sys->jacobi);
+Dsys.c:  free (sys->stokesnb);
+Dsys.c:  free (sys->senddusttoprevCPU);
+Dsys.c:  free (sys->senddusttonextCPU);
+Dsys.c:  free (sys->recvdustfromprevCPU);
+Dsys.c:  free (sys->recvdustfromnextCPU);
+Dsys.c:	    sys->dustsize[i] = pow(C2 + (C1-C2)*drand48(),1.0/(1.0-SIZEPARTSLOPE))/unit_length ;
+Dsys.c:	    sys->dustsize[i] = SIZEMINPART*exp(drand48()*log(SIZEMAXPART/SIZEMINPART))/unit_length;
+Dsys.c:	  sys->dustsize[i] = SIZEMINPART/unit_length;
+Dsys.c:	  sys->r[i] = pow(C2 + (C1-C2)*drand48(),1.0/(1.0-DUSTSLOPE));
+Dsys.c:	  sys->r[i] = RMINDUST * exp(drand48()*log(RMAXDUST/RMINDUST));
+Dsys.c:	sys->th[i] = AziInf[0] + drand48()*(AziSup[NSEC-1]-AziInf[0]);
+Dsys.c:    MPI_Bcast (sys->dustsize, NBPART, MPI_DOUBLE,CPU_Highest, MPI_COMM_WORLD);
+Dsys.c:    MPI_Bcast (sys->r, NBPART, MPI_DOUBLE,CPU_Highest, MPI_COMM_WORLD);
+Dsys.c:    MPI_Bcast (sys->th, NBPART, MPI_DOUBLE,CPU_Highest, MPI_COMM_WORLD);
+Dsys.c:      sys->dustsize_init[i] = sys->dustsize[i];
+Dsys.c:	sys->vth[i] = pow(sys->r[i],-0.5);
+Dsys.c:	dist = sys->r[i];
+Dsys.c:	sys->vth[i] = pow(sys->r[i],-0.5)*sqrt (1.0-dist*dist*sgacc);
+Dsys.c:      sys->l[i] = sys->r[i]*sys->vth[i];
+Dsys.c:      sys->r[k] = (real)radius;
+Dsys.c:      sys->th[k] = (real)azimuth;
+Dsys.c:      sys->vr[k] = (real)vrad;
+Dsys.c:      sys->vth[k] = (real)vtheta;
+Dsys.c:      sys->stokesnb[k] = (real)ts;
+Dsys.c:      sys->dustsize[k] = (real)dsize/unit_length;
+Dsys.c:      sys->dustsize_init[k] = sys->dustsize[k];
+Dsys.c:      sys->l[k] = sys->r[k]*sys->vth[k];
+Dsys.c:    sys->gasvratpc[k] = 0.0;
+Dsys.c:    sys->gasvtatpc[k] = 0.0;
+Dsys.c:    sys->rad_gradp[k] = 0.0;
+Dsys.c:    sys->azi_gradp[k] = 0.0;
+Dsys.c:    sys->rad_ind_acc[k] = 0.0;
+Dsys.c:    sys->rad_sg_acc[k] = 0.0;
+Dsys.c:    sys->azi_ind_acc[k] = 0.0;
+Dsys.c:    sys->azi_sg_acc[k] = 0.0;
+Dsys.c:    sys->gasdensatpc[k] = 0.0;
+Dsys.c:    sys->gascsatpc[k] = 0.0;
+Dsys.c:    rp = sys->r[k];
+Dsys.c:      tp = sys->th[k];
+Dsys.c:	    sys->gasvratpc[k] += (wr*wt*vr[i*ns+myj]);
+Dsys.c:	    sys->rad_gradp[k] += (wr*wt*radgradp[i*ns+myj]);
+Dsys.c:	      sys->rad_ind_acc[k] += (wr*wt*radindacc[i*ns+myj]);
+Dsys.c:		sys->rad_sg_acc[k] += (wr*wt*radsgacc[i*ns+myj]);
+Dsys.c:		sys->rad_sg_acc[k] += (wr*wt*GLOBAL_AxiSGAccr[i+IMIN]);
+Dsys.c:	    sys->gasvtatpc[k] += (wr*wt*vt[i*ns+myj]);
+Dsys.c:	    sys->azi_gradp[k] += (wr*wt*azigradp[i*ns+myj]);
+Dsys.c:	      sys->azi_ind_acc[k] += (wr*wt*aziindacc[i*ns+myj]);
+Dsys.c:		sys->azi_sg_acc[k] += (wr*wt*azisgacc[i*ns+myj]);
+Dsys.c:	    sys->gasdensatpc[k] += (wr*wt*dens[i*ns+myj]);
+Dsys.c:	    sys->gascsatpc[k]   += (wr*wt*cs[i*ns+myj]);
+Dsys.c:	vrp = sys->vr[k];
+Dsys.c:	vtp = sys->vth[k];
+Dsys.c:	vrg = sys->gasvratpc[k];
+Dsys.c:	vtg = sys->gasvtatpc[k];
+Dsys.c:	csg = sys->gascsatpc[k];
+Dsys.c:	densg = sys->gasdensatpc[k];
+Dsys.c:	/* Knudsen number, note that sys->dustsize[k] is already in code units */
+Dsys.c:	Kn = 0.5*lambda/sys->dustsize[k];
+Dsys.c:	St = 0.5*M_PI*Cdrag*sys->dustsize[k]*dust_density_codeunits/densg;  // Stokes number (St)
+Dsys.c:	Ts = St*pow(sys->r[k],1.5);                 // Stopping time (Ts)
+Dsys.c:      sys->stokesnb[k] = St;
+Dsys.c:	   vrp = vrg + Ts*sys->rad_gradp[k]/densg;
+Dsys.c:	   vtp = vtg + Ts*sys->azi_gradp[k]/densg;
+Dsys.c:	 sys->rad_drag_acc[k] = -(vrp-vrg)/Ts;
+Dsys.c:	 sys->azi_drag_acc[k] = -(vtp-vtg)/Ts;
+Dsys.c:	      radfbacc[i*ns+myj] -= (wr*wt*sys->rad_drag_acc[k])*mp/mg;
+Dsys.c:	      //printf ("rp=%lg, tp=%lg, i=%d, rinf=%lg, dr=%lg, wr=%lg, j=%d, myazimuth=%lg, dphi=%lg, wt=%lg, mp=%lg, mg=%lg, raddrag=%lg, inc=%lg, radfbacc=%lg\n",rp,tp,i,Rinf[i],dr,wr,j,myazimuth,dphi,wt,mp,mg,sys->rad_drag_acc[k],-(wr*wt*sys->rad_drag_acc[k])*mp/mg,radfbacc[i*ns+myj]);
+Dsys.c:	      azifbacc[i*ns+myj] -= (wr*wt*sys->azi_drag_acc[k])*mp/mg;
+Dsys.c:    dsys->th[k] = dsys->th[k] - angle;
+Dsys.c:    if (dsys->th[k] < AziInf[0])
+Dsys.c:      dsys->th[k] += (AziSup[NSEC-1]-AziInf[0]);  // add 2pi
+Dsys.c:    if (dsys->th[k] > AziSup[NSEC-1])
+Dsys.c:      dsys->th[k] -= (AziSup[NSEC-1]-AziInf[0]);  // subtract 2pi
+Dsys.c:    rp = sys->r[k];
+Dsys.c:      tp = sys->th[k];
+DustUpdate.c:  senddusttoprevCPU = dsys->senddusttoprevCPU;
+DustUpdate.c:  senddusttonextCPU = dsys->senddusttonextCPU;
+DustUpdate.c:  recvdustfromprevCPU = dsys->recvdustfromprevCPU;
+DustUpdate.c:  recvdustfromnextCPU = dsys->recvdustfromnextCPU;
+DustUpdate.c:    r = dsys->r[k];    //  keep track of R(t) for azimuth's update
+DustUpdate.c:      dsys->r[k] += dsys->vr[k]*0.5*timestep;
+DustUpdate.c:	dsys->th[k] += dsys->vth[k]*r*0.25*timestep*(pow(r,-2.) + pow(dsys->r[k],-2.));
+DustUpdate.c:	dsys->th[k] += dsys->l[k]*0.25*timestep*(pow(r,-2.) + pow(dsys->r[k],-2.));
+DustUpdate.c:	if ( (dsys->r[k] >= Rinf[Zero_or_active]) && (dsys->r[k] <= Rsup[Max_or_active-1]) )
+DustUpdate.c:	  visc = FViscosity(dsys->r[k]);
+DustUpdate.c:	  if (dsys->r[k] < Rinf[Zero_or_active])
+DustUpdate.c:	  if (dsys->r[k] > Rsup[Max_or_active-1])
+DustUpdate.c:	  visc = 1e-6*pow(dsys->r[k],2.0); // so that dr/r is uniform
+DustUpdate.c:	dr = sqrt(2.0*visc*timestep / (1.+pow(dsys->stokesnb[k],2.)));
+DustUpdate.c:	dsys->r[k] = dsys->r[k] + dr*cos(psi);
+DustUpdate.c:	dsys->th[k] = dsys->th[k] + (dr/dsys->r[k])*sin(psi);
+DustUpdate.c:	if ( (dsys->r[k] >= Rinf[Zero_or_active]) && (dsys->r[k] <= Rsup[Max_or_active-1]) )
+DustUpdate.c:	  visc = FViscosity(dsys->r[k]);
+DustUpdate.c:	  if (dsys->r[k] < Rinf[Zero_or_active])
+DustUpdate.c:	  if (dsys->r[k] > Rsup[Max_or_active-1])
+DustUpdate.c:	D_dust  = visc*(1.0+4.0*pow(dsys->stokesnb[k],2.))*pow(1.+pow(dsys->stokesnb[k],2.),-2.0); // dust diffusion coefficient
+DustUpdate.c:	while ( dsys->r[k] >= Rinf[ip] ) ip++;
+DustUpdate.c:	tp = dsys->th[k];
+DustUpdate.c:	dsys->r[k] = dsys->r[k] + dr;
+DustUpdate.c:	dphi = myrandn_phi(dphi_mean,sqrt(sigma_r_squared)/dsys->r[k]);
+DustUpdate.c:	dsys->th[k] = dsys->th[k] + dphi;
+DustUpdate.c:      if (dsys->th[k] < AziInf[0])
+DustUpdate.c:	dsys->th[k] += (AziSup[NSEC-1]-AziInf[0]);  // add 2pi
+DustUpdate.c:      if (dsys->th[k] > AziSup[NSEC-1])
+DustUpdate.c:	dsys->th[k] -= (AziSup[NSEC-1]-AziInf[0]);  // subtract 2pi
+DustUpdate.c:	for (i=0; i<psys->nb; i++) {
+DustUpdate.c:	  xp = psys->x[i];
+DustUpdate.c:	  yp = psys->y[i];
+DustUpdate.c:	  distfromplanet = sqrt( dsys->r[k]*dsys->r[k] + rp*rp - 2.0*dsys->r[k]*rp*cos(dsys->th[k]-tp));
+DustUpdate.c:	  mp = psys->mass[i];
+DustUpdate.c:	    dsys->th[k] = AziInf[0] + drand48()*(AziSup[NSEC-1]-AziInf[0]);
+DustUpdate.c:	    dsys->r[k] = Rinf[Zero_or_active] + drand48()*(Rsup[Max_or_active-1]-Rinf[Zero_or_active]);
+DustUpdate.c:	    distfromplanet = sqrt( dsys->r[k]*dsys->r[k] + rp*rp - 2.0*dsys->r[k]*rp*cos(dsys->th[k]-tp));
+DustUpdate.c:      if ( (dsys->r[k] <  Rinf[Zero_or_active]) && (CPU_Rank != 0) ) {
+DustUpdate.c:	senddusttoprevCPU[5*indexprev+1] = dsys->r[k];
+DustUpdate.c:	senddusttoprevCPU[5*indexprev+2] = dsys->th[k];
+DustUpdate.c:	senddusttoprevCPU[5*indexprev+3] = dsys->vr[k];
+DustUpdate.c:	  senddusttoprevCPU[5*indexprev+4] = dsys->vth[k];
+DustUpdate.c:	  senddusttoprevCPU[5*indexprev+4] = dsys->l[k];
+DustUpdate.c:      if ( (dsys->r[k] >= Rsup[Max_or_active-1]) && (CPU_Rank != CPU_Highest) ) {
+DustUpdate.c:	senddusttonextCPU[5*indexnext+1] = dsys->r[k];
+DustUpdate.c:	senddusttonextCPU[5*indexnext+2] = dsys->th[k];
+DustUpdate.c:	senddusttonextCPU[5*indexnext+3] = dsys->vr[k];
+DustUpdate.c:	  senddusttonextCPU[5*indexnext+4] = dsys->vth[k];
+DustUpdate.c:	  senddusttonextCPU[5*indexnext+4] = dsys->l[k];
+DustUpdate.c:      dsys->r[myk] = recvdustfromprevCPU[5*i+1];
+DustUpdate.c:      dsys->th[myk] = recvdustfromprevCPU[5*i+2];
+DustUpdate.c:      dsys->vr[myk] = recvdustfromprevCPU[5*i+3];
+DustUpdate.c:	dsys->vth[myk] = recvdustfromprevCPU[5*i+4];
+DustUpdate.c:	dsys->l[myk] = recvdustfromprevCPU[5*i+4];
+DustUpdate.c:      dsys->r[myk] = recvdustfromnextCPU[5*i+1];
+DustUpdate.c:      dsys->th[myk] = recvdustfromnextCPU[5*i+2];
+DustUpdate.c:      dsys->vr[myk] = recvdustfromnextCPU[5*i+3];
+DustUpdate.c:	dsys->vth[myk] = recvdustfromnextCPU[5*i+4];
+DustUpdate.c:	dsys->l[myk] = recvdustfromnextCPU[5*i+4];
+DustUpdate.c:      dsys->dustsize[k] = dsys->dustsize_init[k] + (1e3*dsys->dustsize_init[k])*DustMassTaper;
+DustUpdate.c:    rd  = dsys->r[k];
+DustUpdate.c:      td  = dsys->th[k];
+DustUpdate.c:      vrd = dsys->vr[k];
+DustUpdate.c:      vtd = dsys->vth[k];
+DustUpdate.c:      ld  = dsys->l[k];
+DustUpdate.c:      vrg = dsys->gasvratpc[k];
+DustUpdate.c:      vtg = dsys->gasvtatpc[k];
+DustUpdate.c:      St  = dsys->stokesnb[k];
+DustUpdate.c:	dsys->vr[k]  = vrg + stoptime*dsys->rad_gradp[k]/dsys->gasdensatpc[k];
+DustUpdate.c:	dsys->vth[k] = vtg + stoptime*dsys->azi_gradp[k]/dsys->gasdensatpc[k];
+DustUpdate.c:	dsys->l[k] = rd*dsys->vth[k];
+DustUpdate.c:	//printf ("SFTA: vr = %lg, vth = %lg, r = %lg, th = %lg\n",dsys->vr[k],dsys->vth[k],rd,td);
+DustUpdate.c:	dsys->rad_geff_acc[k] = FgravR + vtd*vtd/rd;
+DustUpdate.c:	dsys->azi_geff_acc[k] = FgravTh - vrd*vtd/rd;
+DustUpdate.c:	  for (i = 0; i < Plsys->nb; i++) {
+DustUpdate.c:	    xp = Plsys->x[i];
+DustUpdate.c:	    yp = Plsys->y[i];
+DustUpdate.c:	    mp = Plsys->mass[i];
+DustUpdate.c:	  FgravR += dsys->rad_ind_acc[k];
+DustUpdate.c:	  FgravTh += dsys->azi_ind_acc[k];
+DustUpdate.c:	  FgravR += dsys->rad_sg_acc[k];
+DustUpdate.c:	  FgravTh += dsys->azi_sg_acc[k];
+DustUpdate.c:	  dsys->vth[k] = vtg + numTh/den;	
+DustUpdate.c:	     line below to keep dsys->vth[k]! */
+DustUpdate.c:	  numR = (vrd-vrg) + timestep*(FgravR + (dsys->vth[k]*dsys->vth[k])/rd);
+DustUpdate.c:	  dsys->vr[k] = vrg + numR/den;
+DustUpdate.c:	  dsys->l[k] += numTh/den;
+DustUpdate.c:	  dsys->vth[k] = dsys->l[k]/rd;
+DustUpdate.c:	  numR = timestep*(FgravR + 0.5*pow(rd,-3.0)*(ld*ld + dsys->l[k]*dsys->l[k]) + LocalDustFeelDisk*(vrg-vrd)/stoptime);
+DustUpdate.c:	  dsys->vr[k] += numR/den;
+DustUpdate.c:	//if ( (dsys->vth[k] < 0) || (dsys->vth[k] > 10.0) )
+DustUpdate.c:	//printf ("SII: vr = %lg, vth = %lg, r = %lg, th = %lg\n",dsys->vr[k],dsys->vth[k],rd,td);
+DustUpdate.c:	 keep the particles updated velocities dsys->vr[k] and
+DustUpdate.c:	 dsys->vth[k]! */
+DustUpdate.c:      dsys->jacobi[k] = (0.5*(pow(dsys->vr[k],2.) + pow(dsys->vth[k],2.))) - 1./dsys->r[k] - PotPlan - OmegaPlan*rd*dsys->vth[k];
+Force.c:  if (sys->Binary[0] == YES) {
+Force.c:    x0 = sys->x[0];
+Force.c:    x1 = sys->x[1];
+Force.c:    y0 = sys->y[0];
+Force.c:    y1 = sys->y[1];
+Force.c:    m0 = sys->mass[0];
+Force.c:    m1 = sys->mass[1];
+Force.c:      if (sys->Binary[0] == YES) {
+Force.c:  nb = psys->nb;
+Force.c:    x = psys->x[i];
+Force.c:    y = psys->y[i];
+Force.c:    vx = psys->vx[i];
+Force.c:    vy = psys->vy[i];
+Force.c:    m = psys->mass[i];
+Init.c:  xp = sys->x[0];
+Init.c:  yp = sys->y[0];
+Init.c:  rhill = rp * pow( sys->mass[0]/3., 1./3 );
+Output.c:  n = sys->nb;
+Output.c:  n = sys->nb;
+Output.c:    Xplanet = sys->x[i];
+Output.c:    Yplanet = sys->y[i];
+Output.c:    VXplanet = sys->vx[i];
+Output.c:    VYplanet = sys->vy[i];
+Output.c:    MplanetVirtual = sys->mass[i];
+Output.c:  n = sys->nb;
+Output.c:    Xplanet = sys->x[i];
+Output.c:    Yplanet = sys->y[i];
+Output.c:    VXplanet = sys->vx[i];
+Output.c:    VYplanet = sys->vy[i];
+Output.c:    MplanetVirtual = sys->mass[i];
+Output.c:  for (k = 0; k < sys->nb; k++) {
+Output.c:    sys->x[k] = GetfromPlanetFile (timestep, 2, k);
+Output.c:    sys->y[k] = GetfromPlanetFile (timestep, 3, k);
+Output.c:    if ( fabs((bufmass-sys->mass[k])/bufmass) > 1e-4 ) {
+Output.c:      sys->vx[k] = bufvx*sqrt( (1.+sys->mass[k])/(1.+bufmass) );
+Output.c:      sys->vy[k] = bufvy*sqrt( (1.+sys->mass[k])/(1.+bufmass) );
+Output.c:      sys->vx[k] = bufvx;
+Output.c:      sys->vy[k] = bufvy;
+Output.c:      sys->mass[k] = bufmass;
+Output.c:      masterprint ("At restart mass of planet %d is %lg\n", k, sys->mass[k]);
+Output.c:    r = sys->r[i];
+Output.c:      fprintf (output, "%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\n",sys->r[i],sys->th[i],sys->vr[i],sys->vth[i],sys->stokesnb[i],sys->dustsize[i]*unit_length);
+Output.c:      printf ("Particle %d not written with r=%lg, th=%lg, vr=%lg, vth=%lg\n",i,sys->r[i],sys->th[i],sys->vr[i],sys->vth[i]);
+Output.c:  xp = Plsys->x[0];
+Output.c:  yp = Plsys->y[0];
+Output.c:  deltatheta = dsys->th[num] - tp; // theta_particle - theta_planet
+Output.c:    rd = dsys->r[num];
+Output.c:    td = dsys->th[num];
+Output.c:    mp = Plsys->mass[0];
+Output.c:    dsys->jacobi[num] = (0.5*(pow(dsys->vr[num],2.) + pow(dsys->vth[num],2.))) - 1./dsys->r[num] - PotPlan - OmegaPlan*dsys->r[num]*dsys->vth[num];
+Output.c:  fprintf (output, "%#.14g\t%#.14g\t%#.14g\t%#.14g\t%#.14g\t%#.14g\t%#.14g\n",PhysicalTime,dsys->jacobi[num],dsys->r[num],deltatheta,dsys->th[num],dsys->vr[num],dsys->vth[num]);
+Pframeforce.c:  NbPlanets = sys->nb;
+Pframeforce.c:    xplanet = sys->x[k];
+Pframeforce.c:    yplanet = sys->y[k];
+Pframeforce.c:    mplanet = sys->mass[k];
+Pframeforce.c:  NbPlanets = sys->nb;
+Pframeforce.c:    if (sys->FeelDisk[k] == YES) {
+Pframeforce.c:      m = sys->mass[k];
+Pframeforce.c:      x = sys->x[k];
+Pframeforce.c:      y = sys->y[k];
+Pframeforce.c:      sys->vx[k] += dt * gamma.x;
+Pframeforce.c:      sys->vy[k] += dt * gamma.y;
+Pframeforce.c:      sys->vx[k] += dt * IndirectTerm.x;
+Pframeforce.c:      sys->vy[k] += dt * IndirectTerm.y;
+Pframeforce.c:  n = sys->nb;
+Pframeforce.c:      q0[i] = sys->x[i];
+Pframeforce.c:      q0[i+n] = sys->y[i];
+Pframeforce.c:      q0[i+2*n] = sys->vx[i];
+Pframeforce.c:      q0[i+3*n] = sys->vy[i];
+Pframeforce.c:      PlanetMasses[i] = sys->mass[i];
+Pframeforce.c:    feelothers = sys->FeelOthers;
+Pframeforce.c:    for (i = 1-(PhysicalTime >= RELEASEDATE); i < sys->nb; i++) {
+Pframeforce.c:	sys->x[i] = q1[i];
+Pframeforce.c:	sys->y[i] = q1[i+n];
+Pframeforce.c:	sys->vx[i] = q1[i+2*n];
+Pframeforce.c:	sys->vy[i] = q1[i+3*n];
+Pframeforce.c:	x = sys->x[i];
+Pframeforce.c:	y = sys->y[i];
+Pframeforce.c:	vx = sys->vx[i];
+Pframeforce.c:	vy = sys->vy[i];
+Pframeforce.c:	sys->x[i]  = r*cos(theta+dtheta);
+Pframeforce.c:	sys->y[i]  = r*sin(theta+dtheta);
+Pframeforce.c:	sys->vx[i] = -v*sin(theta+dtheta);
+Pframeforce.c:	sys->vy[i] =  v*cos(theta+dtheta);
+Pframeforce.c:	x = sys->x[i];
+Pframeforce.c:	y = sys->y[i];
+Pframeforce.c:	vx = sys->vx[i];
+Pframeforce.c:	vy = sys->vy[i];
+Pframeforce.c:	sys->x[i]  = r*cos(theta+dtheta);
+Pframeforce.c:	sys->y[i]  = r*sin(theta+dtheta);
+Pframeforce.c:	sys->vx[i] = -v*sin(theta+dtheta);
+Pframeforce.c:	sys->vy[i] =  v*cos(theta+dtheta);
+Pframeforce.c:	sys->x[i] = q1[i];
+Pframeforce.c:	sys->y[i] = q1[i+n];
+Pframeforce.c:	sys->vx[i] = q1[i+2*n];
+Pframeforce.c:	sys->vy[i] = q1[i+3*n];
+Pframeforce.c:    x = sys->x[0];
+Pframeforce.c:    y = sys->y[0];
+Pframeforce.c:    omega = sqrt((1.+sys->mass[0])/r/r/r);
+Pframeforce.c:    vy = new_r*sqrt((1.+sys->mass[0])/new_r/new_r/new_r);
+Pframeforce.c:    sys->x[0] = new_r*cos(dtheta+theta);
+Pframeforce.c:    sys->y[0] = new_r*sin(dtheta+theta);
+Pframeforce.c:    sys->vx[0]= vx*cos(dtheta+theta) - vy*sin(dtheta+theta); 
+Pframeforce.c:    sys->vy[0]= vx*sin(dtheta+theta) + vy*cos(dtheta+theta); 
+Pframeforce.c:  n = sys->nb;
+Pframeforce.c:    x = sys->x[i];
+Pframeforce.c:    y = sys->y[i];
+Pframeforce.c:    vx = sys->vx[i];
+Pframeforce.c:    vy = sys->vy[i];
+Pframeforce.c:    FindOrbitalElements (x, y, vx, vy, 1.0+sys->mass[i], i);
+Planet.c:  for (k=0; k < sys->nb; k++) {
+Planet.c:    if (sys->acc[k] > 1e-10) {
+Planet.c:      facc = dt*(sys->acc[k]);
+Planet.c:      Xplanet = sys->x[k];
+Planet.c:      Yplanet = sys->y[k];
+Planet.c:      VXplanet = sys->vx[k];
+Planet.c:      VYplanet = sys->vy[k];
+Planet.c:      Mplanet = sys->mass[k];
+Planet.c:      if (sys->FeelDisk[k] == YES) {
+Planet.c:	sys->vx[k] = PxPlanet/Mplanet;
+Planet.c:	sys->vy[k] = PyPlanet/Mplanet;
+Planet.c:      sys->mass[k] = Mplanet;
+Psys.c:  sys->x = x;
+Psys.c:  sys->y = y;
+Psys.c:  sys->vx= vx;
+Psys.c:  sys->vy= vy;
+Psys.c:  sys->acc=acc;
+Psys.c:  sys->mass = mass;
+Psys.c:  sys->FeelDisk = feeldisk;
+Psys.c:  sys->FeelOthers = feelothers;
+Psys.c:  sys->Binary = binary;
+Psys.c:  free (sys->x);
+Psys.c:  free (sys->vx);
+Psys.c:  free (sys->y);
+Psys.c:  free (sys->vy);
+Psys.c:  free (sys->mass);
+Psys.c:  free (sys->acc);
+Psys.c:  free (sys->FeelOthers);
+Psys.c:  free (sys->FeelDisk);
+Psys.c:  free (sys->Binary);
+Psys.c:  sys->nb = nb;
+Psys.c:      sys->mass[i] = (real)mass;
+Psys.c:      FinalPlanetMass[i] = sys->mass[i]; /* Mass of planet i at the
+Psys.c:      sys->x[i] = (real)dist*(1.0+ECCENTRICITY);
+Psys.c:      sys->y[i] = 0.0;
+Psys.c:      sys->vy[i] = (real)sqrt(G*(1.0+sys->mass[i])/dist)*	\
+Psys.c:      sys->vy[i] = (real)sqrt(G*(1.0+massinvelocity)/dist)*	\
+Psys.c:      sys->vx[i] = -0.0000000001*sys->vy[i];
+Psys.c:      sys->acc[i] = accret;
+Psys.c:      sys->FeelDisk[i] = feeldis;
+Psys.c:      sys->FeelOthers[i] = feelothers;
+Psys.c:      sys->Binary[i] = binary;
+Psys.c:    if (sys->Binary[i] == YES) {
+Psys.c:      m0 = sys->mass[0];
+Psys.c:      m1 = sys->mass[1];
+Psys.c:	sys->x[i] = (real)dist;
+Psys.c:	sys->y[i] = (m1/mbin)*BINARYSEPARATION*(1.0+BINARYECCENTRICITY);
+Psys.c:	sys->vy[i] = (real)sqrt(G*(1.0+mbin)/sys->x[i]);
+Psys.c:	sys->vx[i] = -(real)sqrt(G*m1*m1/mbin/BINARYSEPARATION*		\
+Psys.c:	if (RetrogradeBinary) sys->vx[i] = -sys->vx[i];
+Psys.c:	sys->x[i] = sys->x[0];
+Psys.c:	sys->y[i] = -(m0/mbin)*BINARYSEPARATION*(1.0+BINARYECCENTRICITY);
+Psys.c:	sys->vy[i] = sys->vy[0];
+Psys.c:	sys->vx[i] = (real)sqrt(G*m0*m0/mbin/BINARYSEPARATION*		\
+Psys.c:	if (RetrogradeBinary) sys->vx[i] = -sys->vx[i];
+Psys.c:  HillRadius = sys->x[0] * pow( sys->mass[0]/3., 1./3. );
+Psys.c:  nb = sys->nb;
+Psys.c:    printf ("x = %.10f\ty = %.10f\n", sys->x[i],sys->y[i]);
+Psys.c:    printf ("vx = %.10f\tvy = %.10f\n", sys->vx[i],sys->vy[i]);
+Psys.c:    if (sys->acc[i] == 0.0)
+Psys.c:      printf ("accretion time = %.10f\n", 1.0/(sys->acc[i]));
+Psys.c:    if (sys->FeelDisk[i] == YES) {
+Psys.c:    if (sys->FeelOthers[i] == YES) {
+Psys.c:    if (sys->Binary[i] == YES) {
+Psys.c:    xc = x = sys->x[0];
+Psys.c:    yc = y = sys->y[0];
+Psys.c:    vxc = vx= sys->vx[0];
+Psys.c:    vyc = vy= sys->vy[0];
+Psys.c:    m = sys->mass[0]+1.;
+Psys.c:    xc = x = sys->x[1];
+Psys.c:    yc = y = sys->y[1];
+Psys.c:    vxc = vx= sys->vx[1];
+Psys.c:    vyc = vy= sys->vy[1];
+Psys.c:    m = sys->mass[1]+1.;
+Psys.c:    x0 = sys->x[0];
+Psys.c:    x1 = sys->x[1];
+Psys.c:    y0 = sys->y[0];
+Psys.c:    y1 = sys->y[1];
+Psys.c:    vx0 = sys->vx[0];
+Psys.c:    vx1 = sys->vx[1];
+Psys.c:    vy0 = sys->vy[0];
+Psys.c:    vy1 = sys->vy[1];
+Psys.c:    m0 = sys->mass[0];
+Psys.c:    m1 = sys->mass[1];
+Psys.c:  nb = sys->nb;
+Psys.c:    xt = sys->x[i];
+Psys.c:    yt = sys->y[i];
+Psys.c:    sys->x[i] = xt*cost+yt*sint;
+Psys.c:    sys->y[i] = -xt*sint+yt*cost;
+Psys.c:    xt = sys->vx[i];
+Psys.c:    yt = sys->vy[i];
+Psys.c:    sys->vx[i] = xt*cost+yt*sint;
+Psys.c:    sys->vy[i] = -xt*sint+yt*cost;
+SideEuler.c:  for ( k = 0; k < sys->nb; k++ ) {
+SideEuler.c:    xplanet     = sys->x[k];
+SideEuler.c:    yplanet     = sys->y[k];
+SideEuler.c:    vxplanet    = sys->vx[k];
+SideEuler.c:    vyplanet    = sys->vy[k];
+SideEuler.c:    masspl      = sys->mass[k];
+SideEuler.c:    printf ("sys->nb = %d, buf = %lg",sys->nb,buf);
+SideEuler.c:    for (k=0; k<sys->nb; k++) {
+SideEuler.c:      xp = sys->x[k];
+SideEuler.c:      yp = sys->y[k];
+SideEuler.c:    for (k=0; k<sys->nb; k++) {
+SideEuler.c:      xp = sys->x[k];
+SideEuler.c:      yp = sys->y[k];
+SideEuler.c:  x0 = sys->x[0];
+SideEuler.c:  y0 = sys->y[0];
+SideEuler.c:  x1 = sys->x[1];
+SideEuler.c:  y1 = sys->y[1];
+SourceEuler.c:  NbPlanets = sys->nb;
+SourceEuler.c:	sys->mass[k] = FinalPlanetMass[k];
+SourceEuler.c:	  sys->mass[j] = FinalPlanetMass[j];
+SourceEuler.c:	  xk = sys->x[k];
+SourceEuler.c:	  xj = sys->x[j];
+SourceEuler.c:	  yk = sys->y[k];
+SourceEuler.c:	  yj = sys->y[j];
+SourceEuler.c:	  mk = sys->mass[k];
+SourceEuler.c:	  mj = sys->mass[j];
+SourceEuler.c:	sys->mass[k] = FinalPlanetMass[k]*MassTaper;
+SourceEuler.c:	sys->mass[k] = FinalPlanetMass[k];
+SourceEuler.c:	//sys->mass[k] = FinalPlanetMass[k];
+SourceEuler.c:	  //sys->mass[j] = FinalPlanetMass[j];
+SourceEuler.c:	  xk = sys->x[k];
+SourceEuler.c:	  xj = sys->x[j];
+SourceEuler.c:	  yk = sys->y[k];
+SourceEuler.c:	  yj = sys->y[j];
+SourceEuler.c:	  mk = sys->mass[k];
+SourceEuler.c:	  mj = sys->mass[j];
+SourceEuler.c:  NbPlanets = sys->nb;
+SourceEuler.c:	    xp = sys->x[k];
+SourceEuler.c:	    yp = sys->y[k];
+SourceEuler.c:  xpl = sys->x[0];
+SourceEuler.c:  ypl = sys->y[0];
+SourceEuler.c:  MyHillRadius = rpl * pow( sys->mass[0]/3., 1./3. );
+Stockholm.c:  nb = psys->nb;
+Stockholm.c:    x = psys->x[i];
+Stockholm.c:    y = psys->y[i];
+Stockholm.c:    vx = psys->vx[i];
+Stockholm.c:    vy = psys->vy[i];
+Stockholm.c:    m = psys->mass[i];
+aniso.c:  mpl = sys->mass[0];
+aniso.c:  xpl = sys->x[0];
+aniso.c:  ypl = sys->y[0];
+main.c:	r = sqrt( sys->x[0]*sys->x[0] + sys->y[0]*sys->y[0] );
+main.c:	v = sqrt( sys->vx[0]*sys->vx[0] + sys->vy[0]*sys->vy[0] );
+main.c:	r = sqrt( sys->x[1]*sys->x[1] + sys->y[1]*sys->y[1] );
+main.c:	v = sqrt( sys->vx[1]*sys->vx[1] + sys->vy[1]*sys->vy[1] );
+main.c:	 fixed circular orbit at x=sys->x[0], with initial velocity
+main.c:	 sys->vy[0], which includes the radial initial
+sgsysinit.c:  for ( k = 0; k < sys->nb; k++ ) {
+sgsysinit.c:    x = sys->x[k];
+sgsysinit.c:    y = sys->y[k];
+sgsysinit.c:    if ( (sys->Binary[k] == YES) && (k == 0) )
+sgsysinit.c:      sys->vy[k] *= (real)sqrt (1. - dist*dist*sgacc/G/(1.0+sys->mass[k]+sys->mass[k+1]) );
+sgsysinit.c:    if ( (sys->Binary[k] == YES) && (k == 1) )
+sgsysinit.c:      sys->vy[k] *= (real)sqrt (1. - dist*dist*sgacc/G/(1.0+sys->mass[k]+sys->mass[k-1]) );
+sgsysinit.c:    if (sys->Binary[k] == NO)
+sgsysinit.c:      sys->vy[k] *= (real)sqrt (1. - dist*dist*sgacc/G/(1.0+sys->mass[k]) );
