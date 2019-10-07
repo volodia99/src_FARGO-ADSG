@@ -41,7 +41,7 @@ boolean         CorotateWithOuterPlanet = NO;
 boolean         DiscEvaporation = NO, ShortFrictionTimeApproximation = YES;
 boolean         CustomizedIT = NO, AddFloors = YES, AddM1 = NO, AddM1Boosted = NO, AddM1toM10 = NO, TailOffGauss = NO, ExponentialCutoff = NO;
 boolean         DustFeelDisk = YES, DustFeelSG = YES, DustFeelSGZeroMode = NO, DustFeelPlanets = YES, RestartWithNewDust = NO, DustFeelTurb = NO, TailOffIn = NO, TailOffABA = NO, TailOffOwen = NO, DustGrowth = NO;
-boolean         ZZIntegrator = NO, NoTimestepConstraintByParticles = NO, PhotoEvaporation = NO, DecInner = NO, DustFeedback = NO, RemoveDustFromPlanetsHillRadius = YES;
+boolean         ZZIntegrator = NO, NoTimestepConstraintByParticles = NO, PhotoEvaporation = NO, DecInner = NO, DustFeedback = NO, DiskWind = NO, RemoveDustFromPlanetsHillRadius = YES;
 boolean         DustFluid = NO, DustDiffusion = NO, Write_StoppingTime = NO;
 boolean         BC1D_SS_ZeroVel = NO, BC1D_SS_NonZeroVel = NO, BC1D_ZeroDens = YES;
 
@@ -86,7 +86,7 @@ void ReadVariables(filename)
   int            *ptri;
   real           *ptrr;
   FILE           *input;
-  
+
   InitVariables();
   input = fopen(filename, "r");
   if (input == NULL) {
@@ -129,7 +129,7 @@ void ReadVariables(filename)
       }
     }
   }
-  
+
   found = NO;
   for (i = 0; i < VariableIndex; i++) {
     if ((VariableSet[i].read == NO) && (VariableSet[i].necessary == YES)) {
@@ -141,7 +141,7 @@ void ReadVariables(filename)
     }
     if (found == YES)
       prs_exit(1);
-    
+
   }
   found = NO;
   for (i = 0; i < VariableIndex; i++) {
@@ -296,6 +296,9 @@ void ReadVariables(filename)
   if ((*DUSTFEEDBACK == 'y') || (*DUSTFEEDBACK == 'Y')) {
     DustFeedback = YES;
   }
+  if ((*DISKWIND == 'y') || (*DISKWIND == 'Y')) {
+    DiskWind = YES;
+  }
   if ((*INTERPOLATION == 'N') || (*INTERPOLATION == 'n')) {
     NGPInterpolation = YES;
     CICInterpolation = NO;
@@ -420,7 +423,7 @@ void ReadVariables(filename)
     ViscosityAlpha = YES;
     masterprint ("Viscosity is of alpha type\n");
   }
-  
+
   if ((THICKNESSSMOOTHING != 0.0) && (ROCHESMOOTHING != 0.0)) {
     mastererr ("You cannot use at the same time\n");
     mastererr ("`ThicknessSmoothing' and `RocheSmoothing'.\n");
@@ -593,8 +596,8 @@ void GiveTimeInfo (number)
     fprintf (stderr, "CPU Time since last time step : %.3f s\n", last);
     fprintf (stderr, "Mean CPU Time between time steps : %.3f s\n", mean);
     fprintf (stderr, "CPU Load on last time step : %.1f %% \n", (real)(CurrentUser-PreceedingUser)/(real)(Current-Preceeding)*100.);
-    
-  }	
+
+  }
   PreceedingUser = CurrentUser;
   Preceeding = Current;
 }
@@ -626,4 +629,3 @@ void GiveSpecificTime (profiling, process_name)
   t = (real)ticks / (real)Ticks;
   fprintf (stderr, "Time spent in %s : %.3f s\n", process_name.name, t);
 }
-

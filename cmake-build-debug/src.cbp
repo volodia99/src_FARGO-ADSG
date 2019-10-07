@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="src"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="src">
+				<Option output="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/src" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/."/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 src"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="src/fast">
+				<Option output="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/src" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/."/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 src/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/gwf/Desktop/dustyfargoadsg_gaylor/src/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Dsys.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/DustUpdate.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Force.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Init.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Interpret.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/LowTasks.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Output.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Pframeforce.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Planet.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Psys.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/RungeKunta.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/SideEuler.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/SourceEuler.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Stockholm.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Theo.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/TransportEuler.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/Viscosity.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/adimvalue.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/aniso.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/axilib.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/commbound.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/convert.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/fftw_dummy.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/fftw_dummy.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/fondam.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/fpe.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/global.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/global_ex.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/main.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/merge.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/mp.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/mpi_dummy.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/mpi_dummy.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/param.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/param_noex.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/proto.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/rebin.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sg.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgacc.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgdens.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sginit.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgkernel.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgmain.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgproto.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgsysinit.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgupdate.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgvelinit.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/sgzero.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/split.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/turb.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/types.h">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/var.c">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/home/gwf/Desktop/dustyfargoadsg_gaylor/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

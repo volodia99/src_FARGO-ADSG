@@ -25,7 +25,7 @@ static real vt_int[MAX1D], vt_cent[MAX1D];
 
 void ComputeIndirectTerm () {
   IndirectTerm.x = -DiskOnPrimaryAcceleration.x;
-  IndirectTerm.y = -DiskOnPrimaryAcceleration.y; 
+  IndirectTerm.y = -DiskOnPrimaryAcceleration.y;
   if (Indirect_Term == NO) {
     IndirectTerm.x = 0.0;
     IndirectTerm.y = 0.0;
@@ -103,7 +103,7 @@ void FillForcesArrays (sys)
 	  IndPot[l] -= IndirectTerm.x*x + IndirectTerm.y*y;
 	test[l] = IndPot[l];
       }
-      Pot[l] += pot;	
+      Pot[l] += pot;
     }
   }
   /* -- Turbulent potential to modelize the MHD turbulence driven by
@@ -116,7 +116,7 @@ void AdvanceSystemFromDisk (force, Rho, Energy, sys, dt)
      Force *force;
      PlanetarySystem *sys;
      PolarGrid *Rho, *Energy;
-     real dt;		       
+     real dt;
 {
   int NbPlanets, k;
   Pair gamma;
@@ -169,7 +169,7 @@ void AdvanceSystemRK5 (sys, dt)
   /* Default case (see below) */
   if (!ForcedInnerCircular) {
     for (i = 1-(PhysicalTime >= RELEASEDATE); i < sys->nb; i++) {
-      /* Default case: planets position and velocity updated after 
+      /* Default case: planets position and velocity updated after
 	 Runge Kutta step */
       if (!ForcedCircular) {
 	sys->x[i] = q1[i];
@@ -177,7 +177,7 @@ void AdvanceSystemRK5 (sys, dt)
 	sys->vx[i] = q1[i+2*n];
 	sys->vy[i] = q1[i+3*n];
       } else {
-	/* Case where planets are held on a fixed circular orbit with 
+	/* Case where planets are held on a fixed circular orbit with
 	   initial angular frequency omega */
 	x = sys->x[i];
 	y = sys->y[i];
@@ -195,7 +195,7 @@ void AdvanceSystemRK5 (sys, dt)
       }
     }
   } else {
-    /* New (july 2012): particular case where inner planet held on a fixed 
+    /* New (july 2012): particular case where inner planet held on a fixed
        circular orbit */
     for (i = 0; i < n; i++) {
       if (i == 0) {  // inner planet (i=0) fixed -> copy-paste of above
@@ -221,7 +221,7 @@ void AdvanceSystemRK5 (sys, dt)
     }
   }
   /* Case where the innermost planet (with index 0) is drifted
-     manually with a prescribed migration rate tuned by RELEASERADIUS 
+     manually with a prescribed migration rate tuned by RELEASERADIUS
      and RELEASETIME in .par file */
   if (PhysicalTime < RELEASEDATE) {
     x = sys->x[0];
@@ -241,8 +241,8 @@ void AdvanceSystemRK5 (sys, dt)
     vy = new_r*sqrt((1.+sys->mass[0])/new_r/new_r/new_r);
     sys->x[0] = new_r*cos(dtheta+theta);
     sys->y[0] = new_r*sin(dtheta+theta);
-    sys->vx[0]= vx*cos(dtheta+theta) - vy*sin(dtheta+theta); 
-    sys->vy[0]= vx*sin(dtheta+theta) + vy*cos(dtheta+theta); 
+    sys->vx[0]= vx*cos(dtheta+theta) - vy*sin(dtheta+theta);
+    sys->vy[0]= vx*sin(dtheta+theta) + vy*cos(dtheta+theta);
   }
 }
 
@@ -259,7 +259,7 @@ void SolveOrbits (sys)
     vy = sys->vy[i];
     FindOrbitalElements (x, y, vx, vy, 1.0+sys->mass[i], i);
   }
-} 
+}
 
 real ConstructSequence (u, v, n)
      real *u, *v;
@@ -434,7 +434,7 @@ void InitGasVelocities (Vr, Vt)
   cs = SoundSpeed->Field;
   /* Pressure is already initialized: see initeuler in
      SourceEuler.c */
-  pres = Pressure->Field;  
+  pres = Pressure->Field;
   /* ------------------------------------------------------- */
   /* Initialization of azimutal velocity with exact centrifugal
      balance */
@@ -459,7 +459,7 @@ void InitGasVelocities (Vr, Vt)
     }
     for (i = 1; i < GLOBALNRAD; i++)
       vt_int[i] = sqrt(vt_int[i]*Radii[i])-Radii[i]*OmegaFrame;
-    
+
     t1 = vt_cent[0] = vt_int[1]+.75*(vt_int[1]-vt_int[2]);
     r1 = ConstructSequence (vt_cent, vt_int, GLOBALNRAD);
     vt_cent[0] += .25*(vt_int[1]-vt_int[2]);
@@ -541,7 +541,8 @@ void InitGasVelocities (Vr, Vt)
       if (i == nr)
 	vr[l] = 0.0;
       else {
-	vr[l] = IMPOSEDDISKDRIFT*SIGMA0/SigmaInf[i]/ri;
+        vr[l] = IMPOSEDDISKDRIFT*SIGMA0/SigmaInf[i]/ri;
+        // vr[l] = 0.0;
 	if (ViscosityAlpha) {
 	  vr[l] -= 3.0*viscosity/r*(-SIGMASLOPE+2.0*FLARINGINDEX+1.0);
 	} else {
@@ -575,8 +576,8 @@ void InitDustVelocities (DVr, DVt, DRho)
   nr  = DVt->Nrad;
   ns  = DVt->Nsec;
   ts  = TStop->Field;
-  cs  = DSoundSpeed->Field;  
-  pres = DPressure->Field;  
+  cs  = DSoundSpeed->Field;
+  pres = DPressure->Field;
   /* ------------------------------------------------------- */
   /* Initialization of azimutal velocity with exact centrifugal
      balance */
@@ -601,7 +602,7 @@ void InitDustVelocities (DVr, DVt, DRho)
     }
     for (i = 1; i < GLOBALNRAD; i++)
       vt_int[i] = sqrt(vt_int[i]*Radii[i])-Radii[i]*OmegaFrame;
-    
+
     t1 = vt_cent[0] = vt_int[1]+.75*(vt_int[1]-vt_int[2]);
     r1 = ConstructSequence (vt_cent, vt_int, GLOBALNRAD);
     vt_cent[0] += .25*(vt_int[1]-vt_int[2]);
@@ -683,7 +684,8 @@ void InitDustVelocities (DVr, DVt, DRho)
       if (i == nr)
 	vr[l] = 0.0;
       else {
-	vr[l] = IMPOSEDDISKDRIFT*SIGMA0/SigmaInf[i]/ri;
+        // vr[l] = 0.0;
+        vr[l] = IMPOSEDDISKDRIFT*SIGMA0/SigmaInf[i]/ri;
 	if (DViscosityAlpha) {
 	  vr[l] -= 3.0*viscosity/r*(-SIGMASLOPE+2.0*DFLARINGINDEX+1.0);
 	} else {
