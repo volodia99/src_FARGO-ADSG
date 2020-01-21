@@ -41,7 +41,8 @@ boolean         CorotateWithOuterPlanet = NO;
 boolean         DiscEvaporation = NO, ShortFrictionTimeApproximation = YES;
 boolean         CustomizedIT = NO, AddFloors = YES, AddM1 = NO, AddM1Boosted = NO, AddM1toM10 = NO, TailOffGauss = NO, ExponentialCutoff = NO;
 boolean         DustFeelDisk = YES, DustFeelSG = YES, DustFeelSGZeroMode = NO, DustFeelPlanets = YES, RestartWithNewDust = NO, DustFeelTurb = NO, TailOffIn = NO, TailOffABA = NO, TailOffOwen = NO, DustGrowth = NO;
-boolean         ZZIntegrator = NO, NoTimestepConstraintByParticles = NO, PhotoEvaporation = NO, DecInner = NO, DustFeedback = NO, DiskWind = NO, RemoveDustFromPlanetsHillRadius = YES;
+boolean         ZZIntegrator = NO, NoTimestepConstraintByParticles = NO, PhotoEvaporation = NO, DecInner = NO, DustFeedback = NO, RemoveDustFromPlanetsHillRadius = YES;
+boolean         DiskWind = NO, BetaConstant = NO, BzConstant = NO;
 boolean         DustFluid = NO, DustDiffusion = NO, Write_StoppingTime = NO;
 boolean         BC1D_SS_ZeroVel = NO, BC1D_SS_NonZeroVel = NO, BC1D_ZeroDens = YES;
 
@@ -298,6 +299,16 @@ void ReadVariables(filename)
   }
   if ((*DISKWIND == 'y') || (*DISKWIND == 'Y')) {
     DiskWind = YES;
+  }
+  if ((*BETACONSTANT == 'y') || (*BETACONSTANT == 'Y')) {
+    BetaConstant = YES;
+  }
+  if ((*BZCONSTANT == 'y') || (*BZCONSTANT == 'Y')) {
+    BzConstant = YES;
+  }
+  if ( (DiskWind) && (BETACONSTANT == NO) && (BZCONSTANT == NO) ) {
+    masterprint ("You have to choose a condition for Beta if DiskWind = YES, either Beta = Constant or Bz = Constant. By default here Beta = Constant.\n");
+    BetaConstant = YES;
   }
   if ((*INTERPOLATION == 'N') || (*INTERPOLATION == 'n')) {
     NGPInterpolation = YES;

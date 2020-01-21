@@ -31,7 +31,7 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
     r = dsys->r[k];    //  keep track of R(t) for azimuth's update
     if ( (r >= Rinf[Zero_or_active]) && (r < Rsup[Max_or_active-1]) ) {
       dsys->r[k] += dsys->vr[k]*0.5*timestep;
-      /* Zhaohuan Zhu's integrator uses l=R vphi instead of vphi, but both lines are 
+      /* Zhaohuan Zhu's integrator uses l=R vphi instead of vphi, but both lines are
 	 strictly equivalent */
       if (!ZZIntegrator)
 	dsys->th[k] += dsys->vth[k]*r*0.25*timestep*(pow(r,-2.) + pow(dsys->r[k],-2.));
@@ -72,7 +72,7 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
 	  while ( (dsys->r[k] >= Rinf[ip]) && (ip <= Max_or_active-1) ) ip++;
 	}
 	ip--;
-	if (ip < 0) 
+	if (ip < 0)
 	  printf ("Beware: ip is negative for particle %d, for which ip=%d\n",k,ip);
 	tp = dsys->th[k];
 	jp = floor(ns*(tp-AziInf[0])/(AziSup[ns-1]-AziInf[0]));
@@ -84,7 +84,7 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
 	else
 	  lpm1 = lp;
 	lpjm = lp-1;
-	if (jp == 0) 
+	if (jp == 0)
 	  lpjm = ip*ns+ns-1;
 	// Eq. (21) of Charnoz et al. (2011) applied to r-direction, dD_dust/dr discarded
 	dr_mean = D_dust/dens[lp] * (dens[lp]-dens[lpm1])*InvDiffRmed[ip] * timestep;
@@ -130,11 +130,11 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
 	dsys->th[k] += (AziSup[NSEC-1]-AziInf[0]);  // add 2pi
       if (dsys->th[k] > AziSup[NSEC-1])
 	dsys->th[k] -= (AziSup[NSEC-1]-AziInf[0]);  // subtract 2pi
-      
+
       if ( (dsys->th[k] < AziInf[0]) || (dsys->th[k] > AziSup[NSEC-1]) )
 	printf ("Pb in SemiUpdateDustPositions just after DustTurbulence and RemoveDustFromHillRadius for particle %d: old radius=%lg, new radius=%lg, azimuth=%lg, vr=%lg, vphi=%lg, dphi=%lg, dphi_mean=%lg\n",k,r,dsys->r[k],dsys->th[k],dsys->vr[k],dsys->vth[k], dphi, dphi_mean);
-      
-      
+
+
       /* Here we check if the particle's new radius makes it sweep to
 	 another CPU. No need to communicate particles size as long as
 	 it doesn't change! */
@@ -179,7 +179,7 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
     MPI_Irecv(&DimFromPrev, 1, MPI_INT, CPU_Prev, 10, MPI_COMM_WORLD, &req1);
     MPI_Wait (&req1, &fargostat);
   }
-  
+
   /* ========================== */
   /* Now let's send the data... */
   /* ========================== */
@@ -204,7 +204,7 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
     if (debug == YES) {
       sprintf(name,"%dfrom%d.dat",CPU_Rank, CPU_Next);
       file = fopen(name, "a");
-      for (i=0; i<DimFromNext/5; i++) 
+      for (i=0; i<DimFromNext/5; i++)
 	fprintf(file,"%.12g\t%d\t%.12g\t%.12g\t%.12g\t%.12g\t%.12g\n",PhysicalTime,DimFromNext,recvdustfromnextCPU[5*i],recvdustfromnextCPU[5*i+1],recvdustfromnextCPU[5*i+2],recvdustfromnextCPU[5*i+3],recvdustfromnextCPU[5*i+4]);
       fclose(file);
     }
@@ -229,7 +229,7 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
     if (debug == YES) {
       sprintf(name,"%dfrom%d.dat",CPU_Rank, CPU_Prev);
       file = fopen(name, "a");
-      for (i=0; i<DimFromPrev/5; i++) 
+      for (i=0; i<DimFromPrev/5; i++)
 	fprintf(file,"%.12g\t%d\t%.12g\t%.12g\t%.12g\t%.12g\t%.12g\n",PhysicalTime,DimFromPrev,recvdustfromprevCPU[5*i],recvdustfromprevCPU[5*i+1],recvdustfromprevCPU[5*i+2],recvdustfromprevCPU[5*i+3],recvdustfromprevCPU[5*i+4]);
       fclose(file);
     }
@@ -263,7 +263,7 @@ void SemiUpdateDustPositions(dsys, psys, gasdens, timestep)
   }
 }
 
-void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)   
+void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)
      DustSystem *dsys;
      PlanetarySystem *Plsys;
      PolarGrid *gasvr, *gasvt, *gasdens;
@@ -276,7 +276,7 @@ void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)
   real PotPlan, OmegaPlan, eps, numR, numTh, den;
   int LocalDustFeelDisk;
   extern boolean IsDisk, DustFeelDisk, DustFeelPlanets, DustFeelSG, Indirect_Term, SelfGravity, ZZIntegrator, ShortFrictionTimeApproximation, DustGrowth;
-  
+
   OmegaPlan = PotPlan = 0.0;
 
   /* NEW (April 2016): very simple model for dust growth due to
@@ -286,17 +286,17 @@ void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)
      be constant... */
   if (DustGrowth) {
     DustMassTaper = (PhysicalTime-PhysicalTimeInitial)/(DUSTMASSTAPER*2.0*M_PI);
-    DustMassTaper = (DustMassTaper > 1.0 ? 1.0 : pow(sin(DustMassTaper*M_PI/2.0),2.0));
-    for (k = 0; k < NBPART; k++) {      
+    DustMassTaper = (DustMassTaper > 1000.0 ? 1000.0 : pow(sin(DustMassTaper*M_PI/2.0),2.0));
+    for (k = 0; k < NBPART; k++) {
       dsys->dustsize[k] = dsys->dustsize_init[k] + (1e3*dsys->dustsize_init[k])*DustMassTaper;
     }
   }
-  
+
   /* Call interpolation function to get the gas density, velocity
      vector and sound speed at particle's position */
   if (IsDisk == YES)
     interpolation(dsys, gasvr, gasvt, gasdens, timestep);
-  
+
   for (k = 0; k < NBPART; k++) {
     rd  = dsys->r[k];
     if ( (rd >= Rinf[Zero_or_active]) && (rd < Rsup[Max_or_active-1]) ) {
@@ -334,7 +334,7 @@ void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)
 	/* Radial and azimuthal forces from the star (direct term) */
 	FgravR = -pow(rd,-2.);
 	FgravTh = 0.;
-      
+
 	/* Particular case of a two-body problem between the central
 	   object and the dust particle: we need this to maintain an
 	   actual numerical equilibrium, otherwise the integrator will go
@@ -373,7 +373,7 @@ void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)
 	    FgravTh +=  -mp*rp*sin(td-tp)*pow(d,-3.0);
 	    // Quantities used to compute particle's Jacobi constant if only one planet
 	    PotPlan = mp/d;
-	    OmegaPlan = pow(0.5*rp,-1.5) * pow(2.0,-1.5); 
+	    OmegaPlan = pow(0.5*rp,-1.5) * pow(2.0,-1.5);
 	  }
 	}
 
@@ -382,19 +382,19 @@ void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)
 	  FgravR += dsys->rad_ind_acc[k];
 	  FgravTh += dsys->azi_ind_acc[k];
 	}
-      
+
 	/* Add disc's gravitational potential if the disc is self-gravitating */
 	if ( (IsDisk == YES) && SelfGravity && DustFeelSG) {
 	  FgravR += dsys->rad_sg_acc[k];
 	  FgravTh += dsys->azi_sg_acc[k];
 	}
-      
+
 	if (!ZZIntegrator) {
 	  /* den is used in the implicit update of dust velocities */
 	  den = 1.0 + LocalDustFeelDisk*timestep/stoptime;
 	  /* Implicite update particle's vtheta */
 	  numTh =  (vtd-vtg) + timestep*(FgravTh - vrd*vtd/rd);
-	  dsys->vth[k] = vtg + numTh/den;	
+	  dsys->vth[k] = vtg + numTh/den;
 	  /* Implicite update of particle's vr. It is important in the
 	     line below to keep dsys->vth[k]! */
 	  numR = (vrd-vrg) + timestep*(FgravR + (dsys->vth[k]*dsys->vth[k])/rd);

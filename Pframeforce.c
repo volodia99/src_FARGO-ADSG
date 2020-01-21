@@ -422,6 +422,8 @@ void InitGasVelocities (Vr, Vt)
 {
   extern boolean SGZeroMode;
   extern boolean SelfGravity;
+  extern boolean DiskWind;
+  extern boolean BetaConstant;
   int i, j, l, nr, ns;
   real *vr, *vt, *pres, *cs;
   real  r, omega, ri, rii, Hi, myvtheta, vt2;
@@ -543,6 +545,9 @@ void InitGasVelocities (Vr, Vt)
       else {
         vr[l] = IMPOSEDDISKDRIFT*SIGMA0/SigmaInf[i]/ri;
         // vr[l] = 0.0;
+        if ((DiskWind) && (BetaConstant)) {
+          vr[l] = -2.0*0.4*sqrt(2.0/M_PI)*ASPECTRATIO*INVBETAPLASMA*pow((Rinf[nr-1]/1.0),FLARINGINDEX-0.5);
+        }
 	if (ViscosityAlpha) {
 	  vr[l] -= 3.0*viscosity/r*(-SIGMASLOPE+2.0*FLARINGINDEX+1.0);
 	} else {
@@ -565,6 +570,8 @@ void InitDustVelocities (DVr, DVt, DRho)
 {
   extern boolean SGZeroMode;
   extern boolean SelfGravity;
+  extern boolean DiskWind;
+  extern boolean BetaConstant;  
   int i, j, l, nr, ns;
   real *rho, *vr, *vt, *ts, *cs, *pres;
   real  r, omega, ri, rii, Hi, myvtheta, vt2, dcs;
@@ -686,6 +693,9 @@ void InitDustVelocities (DVr, DVt, DRho)
       else {
         // vr[l] = 0.0;
         vr[l] = IMPOSEDDISKDRIFT*SIGMA0/SigmaInf[i]/ri;
+        if ((DiskWind) && (BetaConstant)) {
+          vr[l] = -2.0*0.4*sqrt(2.0/M_PI)*ASPECTRATIO*INVBETAPLASMA*pow((Rinf[nr-1]/1.0),FLARINGINDEX-0.5);
+        }
 	if (DViscosityAlpha) {
 	  vr[l] -= 3.0*viscosity/r*(-SIGMASLOPE+2.0*DFLARINGINDEX+1.0);
 	} else {

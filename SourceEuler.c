@@ -685,7 +685,8 @@ void SubStep1 (Vrad, Vtheta, Rho, DVrad, DVtheta, DRho, sys, dt)
 {
   int i, j, l, lim, ljm, ljp, nr, ns;
   boolean selfgravityupdate;
-  extern boolean DustFeedback, DiskWind, DustFluid, DustFeelDisk;
+	extern boolean DustFeedback, DustFluid, DustFeelDisk;
+	extern boolean DiskWind, BetaConstant, BzConstant;
   real *vrad, *vtheta, *rho;
   real *dvrad, *dvtheta, *drho;
   real *Pot, *Press, *cs;
@@ -696,7 +697,8 @@ void SubStep1 (Vrad, Vtheta, Rho, DVrad, DVtheta, DRho, sys, dt)
   real *radgradp, *azigradp;
   real gradp, gradphi, vt2, dvt2, dxtheta, dgradp, dforcer, dforcet;
   real invdxtheta;
-  real supp_torque=0.0;		/* for imposed disk drift */
+	real supp_torque=0.0;		/* for imposed disk drift */
+	real axidens;		/* for imposed disk drift */
   real Cdrag, Re, k_D, f_D, Kn, lambda, densg_cgs, Mach;
   real dust_internal_density, dust_radius, rho_code_tocgs;
   nr = Vrad->Nrad;
@@ -801,12 +803,21 @@ void SubStep1 (Vrad, Vtheta, Rho, DVrad, DVtheta, DRho, sys, dt)
 #pragma omp for
     for (i = 0; i < nr; i++) {
       supp_torque = IMPOSEDDISKDRIFT*0.5*pow(Rmed[i],-2.5+SIGMASLOPE);
-      if (DiskWind)
+      if ((DiskWind) && (BetaConstant)) {
 			supp_torque = -0.4*sqrt(2.0/M_PI)*ASPECTRATIO*INVBETAPLASMA*pow(Rmed[i],-2.+FLARINGINDEX);
-			// supp_torque = -0.4*sqrt(2.0/M_PI)*ASPECTRATIO*INVBETAPLASMA*rho[i*ns]*pow(Rmed[i],-2.+FLARINGINDEX);
+			}
+			if ((DiskWind) && (BzConstant)) {
+			axidens = 0.0;
+			supp_torque = -0.4*sqrt(2.0/M_PI)*ASPECTRATIO*INVBETAPLASMA*SIGMA0;
+			}
       dxtheta = (PMAX-PMIN)/(real)ns*Rmed[i];
       invdxtheta = 1.0/dxtheta;
       for (j = 0; j < ns; j++) {
+				l = j+i*ns;
+				axidens+=rho[l];
+			}
+			axidens/=ns;
+for (j = 0; j < ns; j++) {
 	l = j+i*ns;
 	ljm = l-1;
 	if (j == 0) ljm = i*ns+ns-1;
@@ -817,7 +828,9 @@ void SubStep1 (Vrad, Vtheta, Rho, DVrad, DVtheta, DRho, sys, dt)
 	     self-gravity with an anisotropic pressure (see aniso.c) */
 	  gradp *= SG_aniso_coeff;
 	}
-  // supp_torque = supp_torque/rho[l];
+	if ((DiskWind) && (BzConstant)) {
+  supp_torque = supp_torque/axidens;
+	}
 	gradphi = (Pot[l]-Pot[ljm])*invdxtheta;
 	aziindacc[l] = -(indpot[l]-indpot[ljm])*invdxtheta;
 	vthetaint[l] = vtheta[l]-dt*(gradp+gradphi);
