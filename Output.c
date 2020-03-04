@@ -72,7 +72,7 @@ void WritePlanetSystemFile (sys, t)
     WritePlanetFile (t, i);
   }
 }
-   
+
 
 void WriteBigPlanetFile (timestep, n)
      int timestep;
@@ -195,7 +195,7 @@ void WriteDiskPolar(array, number)   // Ecriture dans un fichier a partir d'un t
   masterprint ("Writing '%s%d.dat'...", array->Name, number);
   fflush (stdout);
   MPI_Barrier (MPI_COMM_WORLD);
-/* We strip the first CPUOVERLAP rings if the current CPU is not the 
+/* We strip the first CPUOVERLAP rings if the current CPU is not the
    innermost one */
   if (CPU_Rank > 0) {
     ptr += CPUOVERLAP*Ns;
@@ -208,13 +208,13 @@ void WriteDiskPolar(array, number)   // Ecriture dans un fichier a partir d'un t
   }
   fwrite (ptr, sizeof(real), Nr*Ns,dump); //on écrit ptr dans dump.. pb : d'où vient le "array" que l'on a mis dans ptr ??
   fclose(dump);
-  //fprintf(stdout, "%d/", CPU_Rank);  
+  //fprintf(stdout, "%d/", CPU_Rank);
   fflush(stdout);
   MPI_Barrier (MPI_COMM_WORLD);
   masterprint("done\n");
 }
 
-void WriteDim () {	  
+void WriteDim () {
   char filename[256];
   FILE 	*dim;
   if (!CPU_Master) return;
@@ -280,7 +280,7 @@ void EmptyDustSystemFile(sys,timestep)
 {
   FILE *output;
   char name[256];
-  
+
   if (!CPU_Master) return;
   sprintf(name, "%sdustsystat%d.dat",OUTPUTDIR,timestep);
   output = fopen(name, "w");
@@ -316,16 +316,16 @@ void WriteDustSystemFile (sys,timestep)
   for (i = 0; i<  NBPART; i++) {
     r = sys->r[i];
     if ( (r >= Rinf[Zero_or_active]) && (r < Rsup[Max_or_active-1]) ) {
-      fprintf (output, "%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\n",sys->r[i],sys->th[i],sys->vr[i],sys->vth[i],sys->stokesnb[i],sys->dustsize[i]*unit_length);
-    } 
+      fprintf (output, "%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\n",sys->r[i],sys->th[i],sys->vr[i],sys->vth[i],sys->stokesnb[i],sys->dustsize[i]*unit_length,sys->r[i]*sys->azi_tot_acc[i]);
+    }
     /*
-    if ( (r < RMIN) || (r > RMAX) ) 
+    if ( (r < RMIN) || (r > RMAX) )
       printf ("Particle %d not written with r=%lg, th=%lg, vr=%lg, vth=%lg\n",i,sys->r[i],sys->th[i],sys->vr[i],sys->vth[i]);
     */
   }
   fclose (output);
   if (!CPU_Master) return;
-  
+
   // Merging dustsyst files
   if ( SelfGravity && !SGZeroMode ) {
     one_if_odd = (CPU_Number%2 == 0 ? 0 : 1);
@@ -356,7 +356,7 @@ void WriteDustSystemFile (sys,timestep)
 	     OUTPUTDIR, timestep);
     system (command);
   }
-  
+
   printf ("done\n");
   fflush(stdout);
 }
@@ -367,7 +367,7 @@ void CreateJacobiFile(dsys,num)
 {
   FILE *output;
   char name[256];
-  
+
   if (!CPU_Master) return;
   sprintf(name, "%sjacobi%d.dat",OUTPUTDIR,num);
   output = fopen(name, "w");
@@ -413,11 +413,11 @@ void WriteJacobi(dsys, Plsys,  num)
     // Smoothed distance between planet and dust particle
     d = sqrt( rd*rd + rp*rp - 2.0*rd*rp*cos(td-tp) + eps*eps );
     PotPlan = mp/d;
-    OmegaPlan = pow(rp,-1.5); 
+    OmegaPlan = pow(rp,-1.5);
     dsys->jacobi[num] = (0.5*(pow(dsys->vr[num],2.) + pow(dsys->vth[num],2.))) - 1./dsys->r[num] - PotPlan - OmegaPlan*dsys->r[num]*dsys->vth[num];
   }
   fprintf (output, "%#.14g\t%#.14g\t%#.14g\t%#.14g\t%#.14g\t%#.14g\t%#.14g\n",PhysicalTime,dsys->jacobi[num],dsys->r[num],deltatheta,dsys->th[num],dsys->vr[num],dsys->vth[num]);
-  
+
   fclose (output);
   fflush(stdout);
 }

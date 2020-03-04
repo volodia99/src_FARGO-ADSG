@@ -8,7 +8,7 @@ DustSystem *AllocDustSystem (nb)
 int nb;
 {
   real *r,*ds,*dsi,*the,*vr,*vth,*l;
-  real *rad_geff_acc,*azi_geff_acc,*rad_drag_acc,*azi_drag_acc;
+  real *rad_geff_acc,*azi_geff_acc,*rad_drag_acc,*azi_drag_acc, *azi_tot_acc;
   real *rad_ind_acc,*azi_ind_acc,*rad_sg_acc,*azi_sg_acc, *rad_gradp, *azi_gradp;
   real *gasvratpc,*gasvtatpc,*gasdensatpc,*gascsatpc,*jacobi, *stokesnb;
   real *senddusttoprevCPU, *senddusttonextCPU, *recvdustfromprevCPU, *recvdustfromnextCPU;
@@ -35,6 +35,7 @@ int nb;
   azi_geff_acc = (real *)malloc(sizeof(real)*(nb+1));
   rad_drag_acc = (real *)malloc(sizeof(real)*(nb+1));
   azi_drag_acc = (real *)malloc(sizeof(real)*(nb+1));
+  azi_tot_acc = (real *)malloc(sizeof(real)*(nb+1));
   rad_ind_acc = (real *)malloc(sizeof(real)*(nb+1));
   azi_ind_acc = (real *)malloc(sizeof(real)*(nb+1));
   rad_sg_acc = (real *)malloc(sizeof(real)*(nb+1));
@@ -49,12 +50,12 @@ int nb;
   senddusttonextCPU = (real *)malloc(sizeof(real)*(5*nb));
   recvdustfromprevCPU = (real *)malloc(sizeof(real)*(5*nb));
   recvdustfromnextCPU = (real *)malloc(sizeof(real)*(5*nb));
-  
-  if ((ds==NULL) || (dsi==NULL) || (r==NULL) || (the==NULL) || (vr == NULL) || (vth==NULL) || (l==NULL) || (rad_ind_acc==NULL) || (azi_ind_acc==NULL) || (rad_gradp==NULL) || (azi_gradp==NULL) || (rad_sg_acc==NULL) || (azi_sg_acc==NULL) || (rad_geff_acc==NULL) || (azi_geff_acc==NULL) || (rad_drag_acc==NULL) || (azi_drag_acc==NULL) || (gasvratpc==NULL) ||(gasvtatpc==NULL) || (gasdensatpc==NULL) || (gascsatpc==NULL) || (jacobi == NULL) || (stokesnb == NULL) || (senddusttoprevCPU==NULL) || (senddusttonextCPU==NULL) || (recvdustfromprevCPU==NULL) || (recvdustfromnextCPU==NULL)) {
+
+  if ((ds==NULL) || (dsi==NULL) || (r==NULL) || (the==NULL) || (vr == NULL) || (vth==NULL) || (l==NULL) || (rad_ind_acc==NULL) || (azi_ind_acc==NULL) || (rad_gradp==NULL) || (azi_gradp==NULL) || (rad_sg_acc==NULL) || (azi_sg_acc==NULL) || (rad_geff_acc==NULL) || (azi_geff_acc==NULL) || (rad_drag_acc==NULL) || (azi_drag_acc==NULL) || (azi_tot_acc==NULL) || (gasvratpc==NULL) ||(gasvtatpc==NULL) || (gasdensatpc==NULL) || (gascsatpc==NULL) || (jacobi == NULL) || (stokesnb == NULL) || (senddusttoprevCPU==NULL) || (senddusttonextCPU==NULL) || (recvdustfromprevCPU==NULL) || (recvdustfromnextCPU==NULL)) {
     fprintf (stderr, "Not enough memory in Dsys.c... aborting! \n");
     prs_exit (1);
   }
-  
+
   sys->dustsize = ds;
   sys->dustsize_init = dsi;
   sys->r = r;
@@ -68,6 +69,7 @@ int nb;
   sys->azi_gradp = azi_gradp;
   sys->rad_drag_acc = rad_drag_acc;
   sys->azi_drag_acc = azi_drag_acc;
+  sys->azi_tot_acc = azi_tot_acc;
   sys->rad_ind_acc = rad_ind_acc;
   sys->azi_ind_acc = azi_ind_acc;
   sys->rad_sg_acc = rad_sg_acc;
@@ -84,9 +86,9 @@ int nb;
   sys->recvdustfromnextCPU = recvdustfromnextCPU;
 
   for (i=0; i<nb; i++) {
-    ds[i] = dsi[i] = r[i] = the[i] = vr[i] = vth[i] = l[i] = rad_ind_acc[i] = azi_ind_acc[i] = rad_geff_acc[i] = azi_geff_acc[i] = rad_gradp[i] = azi_gradp[i] = rad_drag_acc[i] = azi_drag_acc[i] = rad_sg_acc[i] = azi_sg_acc[i] = gasvratpc[i] = gasvtatpc[i] = gasdensatpc[i] = gascsatpc[i] = jacobi[i] = stokesnb[i] = senddusttoprevCPU[i] = senddusttonextCPU[i] = recvdustfromprevCPU[i] = recvdustfromnextCPU[i] = 0.0;
+    ds[i] = dsi[i] = r[i] = the[i] = vr[i] = vth[i] = l[i] = rad_ind_acc[i] = azi_ind_acc[i] = rad_geff_acc[i] = azi_geff_acc[i] = rad_gradp[i] = azi_gradp[i] = rad_drag_acc[i] = azi_drag_acc[i] = azi_tot_acc[i] = rad_sg_acc[i] = azi_sg_acc[i] = gasvratpc[i] = gasvtatpc[i] = gasdensatpc[i] = gascsatpc[i] = jacobi[i] = stokesnb[i] = senddusttoprevCPU[i] = senddusttonextCPU[i] = recvdustfromprevCPU[i] = recvdustfromnextCPU[i] = 0.0;
   }
-  
+
   return sys;
 }
 
@@ -109,6 +111,7 @@ void FreeDust (sys)
   free (sys->azi_gradp);
   free (sys->rad_drag_acc);
   free (sys->azi_drag_acc);
+  free (sys->azi_tot_acc);
   free (sys->rad_ind_acc);
   free (sys->azi_ind_acc);
   free (sys->rad_sg_acc);
@@ -142,11 +145,11 @@ DustSystem *InitDustSystem ()
 
   /* Minimum and maximum radii between which dust particles are set
      initially */
-  if (RMINDUST == 0.0) 
+  if (RMINDUST == 0.0)
     RMINDUST = RMIN;
-  if (RMAXDUST == 0.0) 
+  if (RMAXDUST == 0.0)
     RMAXDUST = RMAX;
-  
+
   /* Check consistency between choices of SIZEMINPART, SIZEMAXPART and
      SIZEPARTSLOPE */
   if ( (SIZEMINPART == SIZEMAXPART) && (SIZEPARTSLOPE != 0.0) ) {
@@ -154,7 +157,7 @@ DustSystem *InitDustSystem ()
     mastererr ("Aborted. Please check your parameters in the .par file\n");
     prs_exit(1);
   }
-  
+
   if ( (!Restart) || (RestartWithNewDust) ) {
     /* Only CPH_Highest sorts out particle's size, radius and
        azimuth. For the particles size, we assume their probability
@@ -182,7 +185,7 @@ DustSystem *InitDustSystem ()
 	  for (i=0; i<NBPART ;i++)
 	    sys->dustsize[i] = SIZEMINPART*exp(drand48()*log(SIZEMAXPART/SIZEMINPART))/unit_length;
 	}
-      } else { 
+      } else {
 	for (i=0; i<NBPART ;i++)
 	  sys->dustsize[i] = SIZEMINPART/unit_length;
       }
@@ -240,7 +243,7 @@ DustSystem *InitDustSystem ()
     sprintf (filename, "%sdustsystat%d.dat", OUTPUTDIR, NbRestart);
     input = fopen (filename, "r");
     if (input == NULL) {
-      fprintf (stderr, "WARNING ! Can't read %s to reinitialize particles. Aborting.\n", filename); 
+      fprintf (stderr, "WARNING ! Can't read %s to reinitialize particles. Aborting.\n", filename);
       prs_exit(1);
     }
     while (fgets(s, NBPART, input) != NULL) {
@@ -287,7 +290,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
   vr   = gasvr->Field;
   vt   = gasvt->Field;
   dens = gasdens->Field;
-  cs   = SoundSpeed->Field; 
+  cs   = SoundSpeed->Field;
   radindacc = RadIndAcc->Field;
   aziindacc = AziIndAcc->Field;
   radsgacc = RadSGAcc->Field;
@@ -297,7 +300,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
   fbedot   = FBedot->Field;
   radgradp = RadGradP->Field;
   azigradp = AziGradP->Field;
-  
+
   /* Convert particle's mean density from g/cm^3 to code units */
   dust_density_codeunits = RHOPART*1000.0*pow(unit_length, 3.)/unit_mass;
 
@@ -314,7 +317,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
       }
     }
   }
-  
+
   /* Grid spacing along radial and azimuthal directions */
   if (!LogGrid)
     delta_r = Rsup[0]-Rinf[0];        // arithmetic radial spacing
@@ -331,7 +334,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
      of the disc's self-gravitating potential */
   if (DustFeelSGZeroMode)
     mpi_make1Dprofile (SG_Accr, GLOBAL_AxiSGAccr);
-  
+
   /* ======================== */
   /* Loop over dust particles */
   /* ======================== */
@@ -390,7 +393,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	// Triangular-Shaped Cloud interpolation (quadratic splines)
 	if (rp > Rmed[ip])
 	  myip = ip+1;
-	else 
+	else
 	  myip = ip;
 	myjp = jp;
 	imin = myip-1;
@@ -424,7 +427,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	  }
 	  /* Nearest Grid Point (NGP) interpolation */
 	  if (NGPInterpolation) {
-	    if (dr < 0.5*delta_r) 
+	    if (dr < 0.5*delta_r)
 	      wr = 1.0;
 	    else
 	      wr = 0.0;
@@ -437,13 +440,13 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	  }
 	  /* Triangular-Shaped Cloud (TSC) a.k.a. quadratic spline interpolation */
 	  if (TSCInterpolation) {
-	    if (dr < 0.5*delta_r) 
+	    if (dr < 0.5*delta_r)
 	      wr = 0.75-dr*dr/delta_r/delta_r;
 	    if ( (dr >= 0.5*delta_r) && (dr <= 1.5*delta_r) )
 	      wr = 0.5*(1.5-dr/delta_r)*(1.5-dr/delta_r);
 	    if (dr > 1.5*delta_r)
 	      wr = 0.0;
-	    if (dphi < 0.5*delta_phi) 
+	    if (dphi < 0.5*delta_phi)
 	      wt = 0.75-dphi*dphi/delta_phi/delta_phi;
 	    if ( (dphi >= 0.5*delta_phi) && (dphi <= 1.5*delta_phi) )
 	      wt = 0.5*(1.5-dphi/delta_phi)*(1.5-dphi/delta_phi);
@@ -533,7 +536,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	  /* Nearest Grid Point (NGP) interpolation */
 	  if (NGPInterpolation) {
 	    wr = 1.0;
-	    if (dphi < 0.5*delta_phi) 
+	    if (dphi < 0.5*delta_phi)
 	      wt = 1.0;
 	    else
 	      wt = 0.0;
@@ -545,13 +548,13 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	  }
 	  /* Triangular-Shaped Cloud (TSC) a.k.a. quadratic spline interpolation */
 	  if (TSCInterpolation) {
-	    if (dr < 0.5*delta_r) 
+	    if (dr < 0.5*delta_r)
 	      wr = 0.75-dr*dr/delta_r/delta_r;
 	    if ( (dr >= 0.5*delta_r) && (dr <= 1.5*delta_r) )
 	      wr = 0.5*(1.5-dr/delta_r)*(1.5-dr/delta_r);
 	    if (dr > 1.5*delta_r)
 	      wr = 0.0;
-	    if (dphi < 0.5*delta_phi) 
+	    if (dphi < 0.5*delta_phi)
 	      wt = 0.75-dphi*dphi/delta_phi/delta_phi;
 	    if ( (dphi >= 0.5*delta_phi) && (dphi <= 1.5*delta_phi) )
 	      wt = 0.5*(1.5-dphi/delta_phi)*(1.5-dphi/delta_phi);
@@ -643,13 +646,13 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	  }
 	  /* Triangular-Shaped Cloud (TSC) a.k.a. quadratic spline interpolation */
 	  if (TSCInterpolation) {
-	    if (dr < 0.5*delta_r) 
+	    if (dr < 0.5*delta_r)
 	      wr = 0.75-dr*dr/delta_r/delta_r;
 	    if ( (dr >= 0.5*delta_r) && (dr <= 1.5*delta_r) )
 	      wr = 0.5*(1.5-dr/delta_r)*(1.5-dr/delta_r);
 	    if (dr > 1.5*delta_r)
 	      wr = 0.0;
-	    if (dphi < 0.5*delta_phi) 
+	    if (dphi < 0.5*delta_phi)
 	      wt = 0.75-dphi*dphi/delta_phi/delta_phi;
 	    if ( (dphi >= 0.5*delta_phi) && (dphi <= 1.5*delta_phi) )
 	      wt = 0.5*(1.5-dphi/delta_phi)*(1.5-dphi/delta_phi);
@@ -670,7 +673,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
       /* 2d) Now calculate particle's stokes number */
       /* ------------------------------------------ */
       // Defined as in Paardekooper 07 as tau_friction = Stokes nb / Omega_Kep
-      // assuming rho_gas = sigma_gas / sqrt(2pi) / H, 
+      // assuming rho_gas = sigma_gas / sqrt(2pi) / H,
       // we get tau_friction = pi/2 . Cdrag . (s x rho_pc / sigma_gas)
       // with s = particle size, rho_pc = particle internal density
       // Cdrag = (3Kn + 1)^2 / (9Kn^2 f_D + 3Kn k_D)
@@ -723,7 +726,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	printf ("Pb in calculating Stokes number for particle %d: St=%lg, rp=%lg, tp=%lg, densg=%lg, vrp=%lg, vtp=%lg, vrg=%lg, vtg=%lg, csg=%lg\n",k,St,rp,tp,densg,vrp,vtp,vrg,vtg,csg);
 	printf ("Suite: wr=%lg, wt=%lg, i=%d, ns=%d, myj=%d, dens=%lg",wr,wt,i,ns,myj,dens[i*ns+myj]);
       }
-      
+
       /* ----------------------------------- */
       /* 3) Particle's gas drag acceleration */
       /* ----------------------------------- */
@@ -732,7 +735,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	   /* short-friction time approximation for dust feedback */
 	   vrp = vrg + Ts*sys->rad_gradp[k]/densg;
 	   vtp = vtg + Ts*sys->azi_gradp[k]/densg;
-	 } 
+	 }
 	 sys->rad_drag_acc[k] = -(vrp-vrg)/Ts;
 	 sys->azi_drag_acc[k] = -(vtp-vtg)/Ts;
       }
@@ -762,7 +765,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	if (TSCInterpolation) {
 	  if (rp > Rmed[ip])
 	    myip = ip+1;
-	  else 
+	  else
 	    myip = ip;
 	  myjp = jp;
 	  imin = myip-1;
@@ -796,7 +799,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	    }
 	    /* Nearest Grid Point (NGP) interpolation */
 	    if (NGPInterpolation) {
-	      if (dr < 0.5*delta_r) 
+	      if (dr < 0.5*delta_r)
 		wr = 1.0;
 	      else
 		wr = 0.0;
@@ -809,13 +812,13 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	    }
 	    /* Triangular-Shaped Cloud (TSC) a.k.a. quadratic spline interpolation */
 	    if (TSCInterpolation) {
-	      if (dr < 0.5*delta_r) 
+	      if (dr < 0.5*delta_r)
 		wr = 0.75-dr*dr/delta_r/delta_r;
 	      if ( (dr >= 0.5*delta_r) && (dr <= 1.5*delta_r) )
 		wr = 0.5*(1.5-dr/delta_r)*(1.5-dr/delta_r);
 	      if (dr > 1.5*delta_r)
 		wr = 0.0;
-	      if (dphi < 0.5*delta_phi) 
+	      if (dphi < 0.5*delta_phi)
 		wt = 0.75-dphi*dphi/delta_phi/delta_phi;
 	      if ( (dphi >= 0.5*delta_phi) && (dphi <= 1.5*delta_phi) )
 		wt = 0.5*(1.5-dphi/delta_phi)*(1.5-dphi/delta_phi);
@@ -893,7 +896,7 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	    /* Nearest Grid Point (NGP) interpolation */
 	    if (NGPInterpolation) {
 	      wr = 1.0;
-	      if (dphi < 0.5*delta_phi) 
+	      if (dphi < 0.5*delta_phi)
 		wt = 1.0;
 	      else
 		wt = 0.0;
@@ -905,13 +908,13 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	    }
 	    /* Triangular-Shaped Cloud (TSC) a.k.a. quadratic spline interpolation */
 	    if (TSCInterpolation) {
-	      if (dr < 0.5*delta_r) 
+	      if (dr < 0.5*delta_r)
 		wr = 0.75-dr*dr/delta_r/delta_r;
 	      if ( (dr >= 0.5*delta_r) && (dr <= 1.5*delta_r) )
 		wr = 0.5*(1.5-dr/delta_r)*(1.5-dr/delta_r);
 	      if (dr > 1.5*delta_r)
 		wr = 0.0;
-	      if (dphi < 0.5*delta_phi) 
+	      if (dphi < 0.5*delta_phi)
 		wt = 0.75-dphi*dphi/delta_phi/delta_phi;
 	      if ( (dphi >= 0.5*delta_phi) && (dphi <= 1.5*delta_phi) )
 		wt = 0.5*(1.5-dphi/delta_phi)*(1.5-dphi/delta_phi);
@@ -998,13 +1001,13 @@ void interpolation(sys, gasvr, gasvt, gasdens, timestep)
 	      }
 	      /* Triangular-Shaped Cloud (TSC) a.k.a. quadratic spline interpolation */
 	      if (TSCInterpolation) {
-		if (dr < 0.5*delta_r) 
+		if (dr < 0.5*delta_r)
 		  wr = 0.75-dr*dr/delta_r/delta_r;
 		if ( (dr >= 0.5*delta_r) && (dr <= 1.5*delta_r) )
 		  wr = 0.5*(1.5-dr/delta_r)*(1.5-dr/delta_r);
 		if (dr > 1.5*delta_r)
 		  wr = 0.0;
-		if (dphi < 0.5*delta_phi) 
+		if (dphi < 0.5*delta_phi)
 		  wt = 0.75-dphi*dphi/delta_phi/delta_phi;
 		if ( (dphi >= 0.5*delta_phi) && (dphi <= 1.5*delta_phi) )
 		  wt = 0.5*(1.5-dphi/delta_phi)*(1.5-dphi/delta_phi);
@@ -1082,14 +1085,14 @@ void ComputeDustPcDensity (sys, dustdens)
       dustdensity[l] = 0.0;
     }
   }
-  
+
   /* Grid spacing along radial and azimuthal directions */
   if (!LogGrid)
     delta_r = Rsup[0]-Rinf[0];        // arithmetic radial spacing
   else
     delta_r = log(Rsup[0]/Rinf[0]);   // logarithmic radial spacing
   delta_phi = AziSup[0]-AziInf[0];
-  
+
   /* ======================== */
   /* Loop over dust particles */
   /* ======================== */
