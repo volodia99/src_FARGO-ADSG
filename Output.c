@@ -316,7 +316,7 @@ void WriteDustSystemFile (sys,timestep)
   for (i = 0; i<  NBPART; i++) {
     r = sys->r[i];
     if ( (r >= Rinf[Zero_or_active]) && (r < Rsup[Max_or_active-1]) ) {
-      fprintf (output, "%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\n",sys->r[i],sys->th[i],sys->vr[i],sys->vth[i],sys->stokesnb[i],sys->dustsize[i]*unit_length,sys->r[i]*sys->azi_tot_acc[i]);
+      fprintf (output, "%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\t%#.6g\n",sys->r[i],sys->th[i],sys->vr[i],sys->vth[i],sys->stokesnb[i],sys->dustsize[i]*unit_length,sys->r[i]*sys->azi_tot_acc[i]);
     }
     /*
     if ( (r < RMIN) || (r > RMAX) )

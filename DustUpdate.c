@@ -389,9 +389,9 @@ void UpdateDustVelocities(dsys, Plsys, gasvr, gasvt, gasdens, timestep)
 	  FgravTh += dsys->azi_sg_acc[k];
 	}
 
-  dsys->azi_tot_acc[k] = FgravTh
+  dsys->azi_tot_acc[k] = FgravTh;
   if (IsDisk == YES) {
-    dsys->azi_tot_acc[k] += dsys->azi_drag_acc[k]
+    dsys->azi_tot_acc[k] += dsys->azi_drag_acc[k];
   }
 
   if (!ZZIntegrator) {

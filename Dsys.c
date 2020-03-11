@@ -8,7 +8,7 @@ DustSystem *AllocDustSystem (nb)
 int nb;
 {
   real *r,*ds,*dsi,*the,*vr,*vth,*l;
-  real *rad_geff_acc,*azi_geff_acc,*rad_drag_acc,*azi_drag_acc, *azi_tot_acc;
+  real *rad_geff_acc,*azi_geff_acc,*rad_drag_acc,*azi_drag_acc,*azi_tot_acc;
   real *rad_ind_acc,*azi_ind_acc,*rad_sg_acc,*azi_sg_acc, *rad_gradp, *azi_gradp;
   real *gasvratpc,*gasvtatpc,*gasdensatpc,*gascsatpc,*jacobi, *stokesnb;
   real *senddusttoprevCPU, *senddusttonextCPU, *recvdustfromprevCPU, *recvdustfromnextCPU;
@@ -133,7 +133,7 @@ DustSystem *InitDustSystem ()
   DustSystem *sys;
   int i, k=0;
   real C1, C2;
-  real radius, azimuth, vrad, vtheta, ts, dsize;
+  real radius, azimuth, vrad, vtheta, ts, dsize, dtorque;
   int ipl;
   real dist, ri, rip1, dr, sgacc;
   extern boolean Restart, RestartWithNewDust;
@@ -247,7 +247,7 @@ DustSystem *InitDustSystem ()
       prs_exit(1);
     }
     while (fgets(s, NBPART, input) != NULL) {
-      sscanf(s, "%lg %lg %lg %lg %lg %lg", &radius, &azimuth, &vrad, &vtheta, &ts, &dsize);
+      sscanf(s, "%lg %lg %lg %lg %lg %lg %lg", &radius, &azimuth, &vrad, &vtheta, &ts, &dsize, &dtorque);
       sys->r[k] = (real)radius;
       sys->th[k] = (real)azimuth;
       sys->vr[k] = (real)vrad;
@@ -255,6 +255,7 @@ DustSystem *InitDustSystem ()
       sys->stokesnb[k] = (real)ts;
       sys->dustsize[k] = (real)dsize/unit_length;
       sys->dustsize_init[k] = sys->dustsize[k];
+      sys->azi_tot_acc[k] = (real)dtorque;
       sys->l[k] = sys->r[k]*sys->vth[k];
       k++;
     }

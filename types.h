@@ -109,7 +109,7 @@ struct planetary_system {
 };
 
 typedef struct planetary_system PlanetarySystem;
- 
+
 
 struct DustParticlesSystem {
   real *dustsize;                /* particles size */
@@ -127,6 +127,7 @@ struct DustParticlesSystem {
   real *azi_gradp;               /* the azimuthal component of the gas pressure gradient at particle's location */
   real *rad_drag_acc;            /* the radial component of their gas drag acceleration */
   real *azi_drag_acc;            /* the azimuthal component of their gas drag acceleration */
+  real *azi_tot_acc;             /* the azimuthal component of their gas drag and gravitiational accelerations */
   real *rad_ind_acc;             /* the radial component of their indirect acceleration */
   real *azi_ind_acc;             /* the azimuthal component of their indirect acceleration */
   real *rad_sg_acc;              /* the radial component of the gas self-gravitating acceleration */
