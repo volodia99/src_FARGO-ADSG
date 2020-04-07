@@ -15,14 +15,14 @@ in the case of the Hill sphere avoidance.  The force returned is a
 specific force. It has therefore the dimension of an acceleration
 (LT^-2).
 
-October 2014: we no longer assign dimfxy to 11. It is now set to 2 to 
-save computing time (15 to 20%). Only the case 0 and 1 times R_H are 
+October 2014: we no longer assign dimfxy to 11. It is now set to 2 to
+save computing time (15 to 20%). Only the case 0 and 1 times R_H are
 accounted for.
 */
 
 #include "mp.h"
 
-extern boolean OpenInner, NonReflecting;
+extern boolean OpenInner, NonReflecting, BarMass08;
 extern Pair DiskOnPrimaryAcceleration;
 
 Force *AllocateForce ()
@@ -61,7 +61,7 @@ void ComputeForce (force, Rho, x, y, rsmoothing, mass, sys, index)
   real InvDist3, hill_cut, hillcutfactor;
   real *fxi, *fxo, *fyi, *fyo;
   real *localforce, *globalforce;
-  real *dens, *abs, *ord;
+  real *dens, *abs, *ord, *azidens;
   real cutoffdist, raddistfrompla;
   /* dimfxy is a global integer defined in global.h. It is set to 2
      (oct. 2014) */
@@ -71,6 +71,7 @@ void ComputeForce (force, Rho, x, y, rsmoothing, mass, sys, index)
   fyo = (real *) prs_malloc (sizeof(real) * dimfxy);
   localforce = (real *) prs_malloc (sizeof(real) * 4 * dimfxy);
   globalforce = force->GlobalForce;
+  azidens = (real *) prs_malloc (sizeof(real) * GLOBALNRAD);
   ns = Rho->Nsec;
   dens = Rho->Field;
   abs = CellAbscissa->Field;
@@ -109,7 +110,22 @@ void ComputeForce (force, Rho, x, y, rsmoothing, mass, sys, index)
     xb = (m0*x0 + m1*x1) / (m0+m1);
     yb = (m0*y0 + m1*y1) / (m0+m1);
   }
-  
+
+if(BarMass08) {
+  for (i = Zero_or_active; i < Max_or_active; i++) {
+    azidens[i]=0.0;
+    for (j = 0; j < ns; j++) {
+      l = j+i*ns;
+      azidens[i] += dens[l];
+    }
+    azidens[i] /= (real)ns;
+    for (j = 0; j < ns; j++) {
+      l = j+i*ns;
+      dens[l] -= azidens[i];
+    }
+  }
+}
+
 #pragma omp parallel for private(j,hill_cut,cellmass,l,xc,yc,dist2,distance,InvDist3,dx,dy) shared(fxi,fyi,fxhi,fyhi,fxo,fyo,fxho,fyho)
   for (i = Zero_or_active; i < Max_or_active; i++) {
     for (j = 0; j < ns; j++) {
@@ -145,7 +161,7 @@ void ComputeForce (force, Rho, x, y, rsmoothing, mass, sys, index)
 	  if (planet_distance/cutoff < 0.5)
 	    hill_cut = 0.0;
 	  else {
-	    if (planet_distance > cutoff) 
+	    if (planet_distance > cutoff)
 	      hill_cut = 1.0;
 	    else
 	      hill_cut = pow(sin((planet_distance/cutoff-.5)*M_PI),2.);
@@ -169,6 +185,16 @@ void ComputeForce (force, Rho, x, y, rsmoothing, mass, sys, index)
       }
     }
   }
+
+  if (BarMass08) {
+    for (i = Zero_or_active; i < Max_or_active; i++) {
+      for (j = 0; j < ns; j++) {
+        l = j+i*ns;
+        dens[l] += azidens[i];
+      }
+    }
+  }
+
   if (FakeSequential) {
     for ( k = 0; k < dimfxy; k++ ) {
       globalforce [k]            = fxi[k];
@@ -204,6 +230,7 @@ void ComputeForce (force, Rho, x, y, rsmoothing, mass, sys, index)
   force->fy_outer    = globalforce[3*dimfxy];
   force->fy_ex_outer = globalforce[3*dimfxy+dimexclude];
   force->GlobalForce = globalforce;
+  free (azidens);
   free (localforce);
   free (fxi);
   free (fxo);

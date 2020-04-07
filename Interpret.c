@@ -26,7 +26,7 @@ boolean         Write_Density = YES, Write_Velocity = YES, Write_Energy = NO;
 boolean         Write_Temperature = NO, Write_DivV = NO, Write_Jacobi = NO, Write_DustSystem = YES;
 boolean         Write_TherDiff = NO, Write_RadDiff = NO, Write_TherCool = NO, Write_ViscHeat = NO, Write_DustDensity = NO;
 boolean         Write_Potential = NO, Write_Test = NO, Write_gr = NO, Write_gtheta = NO;
-boolean         SelfGravity = NO, SGZeroMode = NO, ZMPlus = NO, AddNoise = NO;
+boolean         SelfGravity = NO, SGZeroMode = NO, ZMPlus = NO, BarMass08 = NO, AddNoise = NO;
 boolean         EnergyEquation = NO, EntropyDiffusion = NO, RadiativeDiffusion = NO, ImplicitRadiativeDiffusion = NO, ThermalCooling = NO, StellarIrradiation = NO, ImposedStellarLuminosity = NO, ViscousHeating = YES, TempPresc = NO, BetaCooling = NO, SetConstantOpacity = NO;
 boolean         CICPlanet = NO, ForcedCircular = NO, ForcedInnerCircular = NO, ComputeCPDMass = NO;
 boolean         MHDLSA = NO, HighMCutoff = NO;
@@ -86,7 +86,7 @@ void ReadVariables(filename)
   int            *ptri;
   real           *ptrr;
   FILE           *input;
-  
+
   InitVariables();
   input = fopen(filename, "r");
   if (input == NULL) {
@@ -129,7 +129,7 @@ void ReadVariables(filename)
       }
     }
   }
-  
+
   found = NO;
   for (i = 0; i < VariableIndex; i++) {
     if ((VariableSet[i].read == NO) && (VariableSet[i].necessary == YES)) {
@@ -141,7 +141,7 @@ void ReadVariables(filename)
     }
     if (found == YES)
       prs_exit(1);
-    
+
   }
   found = NO;
   for (i = 0; i < VariableIndex; i++) {
@@ -340,6 +340,10 @@ void ReadVariables(filename)
   if ((*COROTATEWITHOUTERPLANET == 'y') || (*COROTATEWITHOUTERPLANET == 'Y')) CorotateWithOuterPlanet = YES;
   if ((*INDIRECTTERM == 'N') || (*INDIRECTTERM == 'n')) Indirect_Term = NO;
   if ((*SELFGRAVITY == 'Y') || (*SELFGRAVITY == 'y')) SelfGravity = YES;
+  if ((*SELFGRAVITY == 'B') || (*SELFGRAVITY == 'b')) {
+    SelfGravity = NO;
+    BarMass08 = YES;
+  }
   if ((*SELFGRAVITY == 'Z') || (*SELFGRAVITY == 'z')) {
     SelfGravity = YES;
     SGZeroMode = YES;
@@ -420,7 +424,7 @@ void ReadVariables(filename)
     ViscosityAlpha = YES;
     masterprint ("Viscosity is of alpha type\n");
   }
-  
+
   if ((THICKNESSSMOOTHING != 0.0) && (ROCHESMOOTHING != 0.0)) {
     mastererr ("You cannot use at the same time\n");
     mastererr ("`ThicknessSmoothing' and `RocheSmoothing'.\n");
@@ -593,8 +597,8 @@ void GiveTimeInfo (number)
     fprintf (stderr, "CPU Time since last time step : %.3f s\n", last);
     fprintf (stderr, "Mean CPU Time between time steps : %.3f s\n", mean);
     fprintf (stderr, "CPU Load on last time step : %.1f %% \n", (real)(CurrentUser-PreceedingUser)/(real)(Current-Preceeding)*100.);
-    
-  }	
+
+  }
   PreceedingUser = CurrentUser;
   Preceeding = Current;
 }
@@ -626,4 +630,3 @@ void GiveSpecificTime (profiling, process_name)
   t = (real)ticks / (real)Ticks;
   fprintf (stderr, "Time spent in %s : %.3f s\n", process_name.name, t);
 }
-
